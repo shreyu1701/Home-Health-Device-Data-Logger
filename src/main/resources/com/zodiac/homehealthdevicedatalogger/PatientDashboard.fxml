@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Group?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.chart.AreaChart?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
@@ -24,7 +25,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="com.zodiac.homehealthdevicedatalogger.PatientDashboardController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zodiac.homehealthdevicedatalogger.PatientDashboardController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
@@ -39,7 +40,7 @@
                 <Label layoutX="6.0" layoutY="216.0" text="Gender :" />
                 <Label layoutX="59.0" layoutY="216.0" prefHeight="18.0" prefWidth="101.0" text="Male" />
                 <Label layoutX="7.0" layoutY="247.0" prefHeight="18.0" prefWidth="91.0" text="Blood Group :" />
-                <Button layoutX="64.0" layoutY="357.0" mnemonicParsing="false" style="-fx-background-color: blue;" text="Logout" textFill="WHITE" />
+                <Button fx:id="btnPatientLogout" layoutX="64.0" layoutY="357.0" mnemonicParsing="false" onAction="#handlePatientLogout" style="-fx-background-color: blue;" text="Logout" textFill="WHITE" />
                 <Label layoutX="93.0" layoutY="247.0" prefHeight="18.0" prefWidth="80.0" text="AB+" />
 <!--                Avatar-->
                 <Separator layoutY="146.0" prefHeight="3.0" prefWidth="180.0" />
@@ -220,13 +221,16 @@
                                                 <Label layoutX="6.0" layoutY="10.0" text="From :" />
                                                 <Label layoutX="6.0" layoutY="74.0" text="To:" />
                                                 <DatePicker layoutX="5.0" layoutY="101.0" prefHeight="26.0" prefWidth="154.0" />
-                                                <Group layoutX="7.0" layoutY="179.0">
-                                                  <children>
-                                                    <RadioButton layoutX="1.0" layoutY="-27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="149.0" text="Excel Sheet" textAlignment="CENTER" />
-                                                    <RadioButton layoutX="2.0" layoutY="2.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="148.0" text="PDF" textAlignment="CENTER" />
-                                                  </children>
-                                                </Group>
-                                                <Button layoutX="48.0" layoutY="224.0" mnemonicParsing="false" style="-fx-background-color: blue;" text="Download" textFill="WHITE" />
+                                                <ChoiceBox fx:id="choiceDownload" layoutX="5.0" layoutY="163.0" prefHeight="25.0" prefWidth="155.0">
+                                                  <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                      <String fx:value="Excel" />
+                                                      <String fx:value="PDF" />
+                                                    </FXCollections>
+                                                  </items>
+                                                </ChoiceBox>
+                                                <Button layoutX="48.0" layoutY="230.0" mnemonicParsing="false" style="-fx-background-color: blue;" text="Download" textFill="WHITE" />
+                                                                        <Label layoutX="8.0" layoutY="138.0" text="Download As :" />
                                               </children>
                                             </AnchorPane>
                                           </content>
@@ -264,7 +268,7 @@
                                         <Label layoutX="131.0" layoutY="191.0" prefHeight="18.0" prefWidth="304.0" text="shreyanshkoladiyawork@gmail.com" />
                                         <Text layoutX="22.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Age :" />
                                         <Label layoutX="132.0" layoutY="144.0" prefHeight="18.0" prefWidth="101.0" text="22" />
-                                        <Button layoutX="327.0" layoutY="32.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: blue;" text="Upload Image" textAlignment="CENTER" textFill="WHITE" />
+                                        <Button fx:id="btnUploadImage" layoutX="327.0" layoutY="32.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: blue;" text="Upload Image" textAlignment="CENTER" textFill="WHITE" />
 <!--                                        Avatar -->
                                       </children>
                                     </AnchorPane>
