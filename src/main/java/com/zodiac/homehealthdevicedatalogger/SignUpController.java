@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
-public class SignUpController  {
+public class SignUpController extends MainApplication {
 
     @FXML
     private TextField txtFirstName;

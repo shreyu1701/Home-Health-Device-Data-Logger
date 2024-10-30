@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
-public class LoginController {
+public class LoginController extends MainApplication {
 
 
     @FXML
@@ -36,6 +36,7 @@ public class LoginController {
 
         String email = txtEmail.getText();
         String password = txtPassword.getText();
+
 
         // Validate the email and password
         if (isValidEmail(email) && isValidPassword(password)) {
