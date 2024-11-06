@@ -23,6 +23,7 @@ public class User {
     private String Password;
     private String ConfirmPassword;
 
+    //default constructor
     public User() {}
 
     // Constructor

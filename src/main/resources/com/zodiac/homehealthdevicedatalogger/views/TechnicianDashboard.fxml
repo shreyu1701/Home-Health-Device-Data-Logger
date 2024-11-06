@@ -40,13 +40,13 @@
                                 <Label layoutX="9.0" layoutY="191.0" text="Gender :" />
                                 <Label layoutX="68.0" layoutY="191.0" prefHeight="18.0" prefWidth="101.0" text="Male" />
                                 <Label layoutX="10.0" layoutY="217.0" prefHeight="18.0" prefWidth="91.0" text="Blood Group :" />
-                                <Button layoutX="62.0" layoutY="340.0" mnemonicParsing="false" style="-fx-background-color: blue;" text="Logout" textFill="WHITE" />
+                                <Button fx:id="btnTechnicianLogout"  layoutX="62.0" layoutY="340.0" mnemonicParsing="false" onAction="#handleTechnicianLogout" style="-fx-background-color: blue;" text="Logout" textFill="WHITE" />
                                 <Label layoutX="99.0" layoutY="219.0" prefHeight="18.0" prefWidth="80.0" text="AB+" />
                                 <Separator layoutX="4.0" layoutY="134.0" prefHeight="3.0" prefWidth="180.0" />
                                 <Label layoutX="53.0" layoutY="16.0" text="Technician" />
                         <ImageView fitHeight="70.0" fitWidth="101.0" layoutX="35.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../Downloads/nappy-5RDjrd5GXuM-unsplash.jpg" />
+                              <Image url="@../../../../../resources/image" />
                            </image>
                         </ImageView>
                             </children>
