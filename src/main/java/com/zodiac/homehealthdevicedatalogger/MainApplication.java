@@ -4,8 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.net.URL;
 
 /**
  * HelloApplication is the main entry point for the JavaFX application.
@@ -14,13 +12,12 @@ import java.net.URL;
 public class MainApplication extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Login.fxml"));
-        URL root = fxmlLoader.getClass().getResource("Login.fxml");
-        Scene scene = new Scene(fxmlLoader.load(), 650, 400);
-        stage.setTitle("Login");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/Login.fxml"));
+        Scene scene = new Scene(loader.load());
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Home Health Device Data Logger");
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

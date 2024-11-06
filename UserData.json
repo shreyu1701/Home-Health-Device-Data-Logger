@@ -1,0 +1,24 @@
+[
+  {
+    "role": "Patient",
+    "email": "patient@test.com",
+    "age": "25",
+    "phone": "9876543210",
+    "gender": "Female",
+    "lastName": "role",
+    "confirmPassword": "patient123",
+    "firstName": "role",
+    "password": "patient123"
+  },
+  {
+    "role": "Technician",
+    "email": "technician@test.com",
+    "age": "65",
+    "phone": "9876543210",
+    "gender": "Male",
+    "lastName": "tech",
+    "confirmPassword": "technician123",
+    "firstName": "tech",
+    "password": "technician123"
+  }
+]
