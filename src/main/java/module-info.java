@@ -11,6 +11,8 @@ module com.zodiac.homehealthdevicedatalogger {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires com.fasterxml.jackson.databind;
+    requires java.mail;
+    requires com.google.gson;
     requires java.sql;
 
     opens com.zodiac.homehealthdevicedatalogger.Controllers to javafx.fxml;

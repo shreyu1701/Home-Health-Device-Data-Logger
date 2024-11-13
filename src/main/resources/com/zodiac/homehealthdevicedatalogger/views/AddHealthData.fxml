@@ -2,81 +2,94 @@
 
 <?import java.lang.*?>
 <?import javafx.collections.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zodiac.homehealthdevicedatalogger.Controllers.AddHealthDataController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="298.0" prefWidth="410.0" VBox.vgrow="ALWAYS">
+
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="640.0">
       <children>
-        <Label layoutX="180.0" layoutY="12.0" text="Add Health Data">
+        <!-- Title Label -->
+        <Label layoutX="240.0" layoutY="14.0" text="Add Health Data">
           <font>
             <Font size="22.0" />
           </font>
         </Label>
-        <Separator layoutY="53.0" prefHeight="0.0" prefWidth="640.0" />
-        <Group layoutX="32.0" layoutY="94.0">
-          <children>
 
-            <!-- Health Data Type ChoiceBox -->
-            <Label layoutX="40.0" layoutY="20.0" style="-fx-font-size: 14px; -fx-text-fill: #444;" text="Select Health Data" />
-            <ChoiceBox fx:id="dataChoiceBox" layoutX="40.0" layoutY="50.0" style="-fx-font-size: 14px;">
-              <items>
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Blood Pressure" />
-                  <String fx:value="Sugar Level" />
-                  <String fx:value="Heart Rate" />
-                  <String fx:value="Oxygen Level" />
-                  <String fx:value="Comment" />
-                </FXCollections>
-              </items>
-            </ChoiceBox>
-                  <HBox layoutX="220.0" layoutY="50.0" prefHeight="21.0" prefWidth="270.0">
-                     <children>
-                 <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="Blood Pressure:" />
-                 <TextField fx:id="bloodPressureField" prefHeight="17.0" prefWidth="176.0" promptText="Enter Blood Pressure" style="-fx-font-size: 14px;" />
-                     </children>
-                  </HBox>
+        <!-- Date Picker (Default Today) -->
+        <Label layoutX="40.0" layoutY="60.0" style="-fx-font-size: 14px;" text="Date:" />
+        <DatePicker fx:id="datePicker" layoutX="150.0" layoutY="58.0" />
 
-            <!-- Sugar Level Field -->
-            <HBox fx:id="sugarLevelBox" alignment="CENTER_LEFT" layoutX="220.0" layoutY="50.0" spacing="10" visible="false">
-              <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="Sugar Level:" />
-              <TextField fx:id="sugarLevelField" promptText="Enter Sugar Level" style="-fx-font-size: 14px;" />
-            </HBox>
+        <!-- ChoiceBoxes and TextFields for Health Data -->
+        <!-- Blood Pressure -->
+        <Label layoutX="40.0" layoutY="100.0" style="-fx-font-size: 14px;" text="Blood Pressure:" />
+        <ChoiceBox fx:id="bloodPressureChoiceBox" layoutX="150.0" layoutY="95.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="mmHg" />
+            </FXCollections>
+          </items>
+        </ChoiceBox>
+        <TextField fx:id="bloodPressureField" layoutX="250.0" layoutY="95.0" promptText="120/80 (systolic/diastolic)" />
 
-            <!-- Heart Rate Field -->
-            <HBox fx:id="heartRateBox" alignment="CENTER_LEFT" layoutX="220.0" layoutY="50.0" spacing="10" visible="false">
-              <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="Heart Rate:" />
-              <TextField fx:id="heartRateField" promptText="Enter Heart Rate" style="-fx-font-size: 14px;" />
-            </HBox>
 
-            <!-- Oxygen Level Field -->
-            <HBox fx:id="oxygenLevelBox" alignment="CENTER_LEFT" layoutX="220.0" layoutY="50.0" spacing="10" visible="false">
-              <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="Oxygen Level:" />
-              <TextField fx:id="oxygenLevelField" promptText="Enter Oxygen Level" style="-fx-font-size: 14px;" />
-            </HBox>
 
-            <!-- Comment Field -->
-            <HBox fx:id="commentBox" alignment="CENTER_LEFT" layoutX="220.0" layoutY="50.0" spacing="10" visible="false">
-              <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="Comment:" />
-              <TextField fx:id="commentField" promptText="Enter Comment" style="-fx-font-size: 14px;" />
-            </HBox>
 
-          </children>
-        </Group>
+        <!--        <Label layoutX="40.0" layoutY="100.0" style="-fx-font-size: 14px;" text="Blood Pressure:" />-->
+<!--        <ChoiceBox fx:id="bloodPressureChoiceBox" layoutX="150.0" layoutY="95.0">-->
+<!--          <items>-->
+<!--            <FXCollections fx:factory="observableArrayList">-->
+<!--              <String fx:value="mmHg" />-->
+<!--            </FXCollections>-->
+<!--          </items>-->
+<!--        </ChoiceBox>-->
+<!--        <TextField fx:id="bloodPressureField" layoutX="250.0" layoutY="95.0" promptText="Enter value" />-->
 
-        <!-- Buttons -->
-        <HBox alignment="CENTER" layoutX="110.0" layoutY="240.0" spacing="20">
-          <Button onAction="#saveHealthData" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Save" />
-          <Button onAction="#cancelForm" style="-fx-font-size: 14px; -fx-background-color: #f44336; -fx-text-fill: white;" text="Cancel" />
-        </HBox>
+        <!-- Sugar Level -->
+        <Label layoutX="40.0" layoutY="140.0" style="-fx-font-size: 14px;" text="Sugar Level:" />
+        <ChoiceBox fx:id="sugarLevelChoiceBox" layoutX="150.0" layoutY="135.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="mg/dL" />
+            </FXCollections>
+          </items>
+        </ChoiceBox>
+        <TextField fx:id="sugarLevelField" layoutX="250.0" layoutY="135.0" promptText="Enter value" />
 
-        <!-- Date Picker -->
-        <DatePicker layoutX="425.0" layoutY="60.0" />
+        <!-- Heart Rate -->
+        <Label layoutX="40.0" layoutY="180.0" style="-fx-font-size: 14px;" text="Heart Rate:" />
+        <ChoiceBox fx:id="heartRateChoiceBox" layoutX="150.0" layoutY="175.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="bpm" />
+            </FXCollections>
+          </items>
+        </ChoiceBox>
+        <TextField fx:id="heartRateField" layoutX="250.0" layoutY="175.0" promptText="Enter value" />
+
+        <!-- Oxygen Level -->
+        <Label layoutX="40.0" layoutY="220.0" style="-fx-font-size: 14px;" text="Oxygen Level:" />
+        <ChoiceBox fx:id="oxygenLevelChoiceBox" layoutX="150.0" layoutY="215.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="%" />
+            </FXCollections>
+          </items>
+        </ChoiceBox>
+        <TextField fx:id="oxygenLevelField" layoutX="250.0" layoutY="215.0" promptText="Enter value" />
+
+        <!-- Comment Box for Notes -->
+        <Label layoutX="40.0" layoutY="260.0" style="-fx-font-size: 14px;" text="Comments:" />
+        <TextArea fx:id="commentsArea" layoutX="150.0" layoutY="255.0" prefHeight="60.0" prefWidth="300.0" promptText="Add any additional notes here" />
+
+        <!-- Save Button -->
+        <Button layoutX="198.0" layoutY="330.0" mnemonicParsing="false" onAction="#saveHealthData" prefHeight="30.0" prefWidth="59.0" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Save" />
+            <Button fx:id="btnCancel" layoutX="284.0" layoutY="329.0" mnemonicParsing="false" onAction="#cancelHealthData" style="-fx-font-size: 14px; -fx-background-color: #f44336; -fx-text-fill: white;" text="Cancel" />
       </children>
     </AnchorPane>
+
   </children>
 
 

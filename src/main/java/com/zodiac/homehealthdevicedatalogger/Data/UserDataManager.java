@@ -27,7 +27,6 @@ public class UserDataManager {
     }
 
     // Get all users from the JSON file
-    // Get all users from the JSON file
     public List<User> getAllUsers() {
         ObjectMapper mapper = new ObjectMapper();
         try {

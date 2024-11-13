@@ -1,6 +1,8 @@
 package com.zodiac.homehealthdevicedatalogger.Controllers;
 
 
+import com.zodiac.homehealthdevicedatalogger.Util.EmailService;
+import com.zodiac.homehealthdevicedatalogger.Validation.InputValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +12,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Optional;
 import com.zodiac.homehealthdevicedatalogger.Data.UserDataManager;
 import com.zodiac.homehealthdevicedatalogger.Models.User;
+
+import javax.mail.MessagingException;
 
 public class LoginController {
 
@@ -32,6 +35,8 @@ public class LoginController {
     private Hyperlink linkForgetPassword;
 
     private final UserDataManager userDataManager = new UserDataManager();
+    InputValidator inputValidator = new InputValidator();
+    EmailService emailService = new EmailService();
 
     // Login button Starts
     @FXML
@@ -47,7 +52,7 @@ public class LoginController {
             }
 
             // Validate login
-            User user = validateUser(email, password);
+            User user = inputValidator.validateUser(email, password);
             if (user != null) {
                 if ("Technician".equals(user.getRole())) {
                     // Redirect to Technician Dashboard
@@ -64,16 +69,7 @@ public class LoginController {
             }
         }
 
-        // Validate user credentials from saved users
-        private User validateUser(String email, String password) throws IOException {
-            List<User> users = userDataManager.getAllUsers();
-            for (User user : users) {
-                if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                    return user;
-                }
-            }
-            return null; // User not found
-        }
+
 
         // Show alert messages
         private void showAlert(String title, String message) {
@@ -95,7 +91,8 @@ public class LoginController {
         Optional<String> result = dialog.showAndWait();
 
         result.ifPresent(email -> {
-            if (isValidEmail(email)) {
+            if (inputValidator.isValidEmail(email)) {
+
                 sendPasswordResetLink(email);
 
                 showConfirmationDialog("Password reset link has been sent to your email.");
@@ -106,10 +103,7 @@ public class LoginController {
 
     }
 
-    private boolean isValidEmail(String email) {
-        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        return email.matches(emailPattern);
-    }
+
 
 
     //Show Error Dialog Message Box
@@ -131,7 +125,12 @@ public class LoginController {
     //Valid Email (Login Email && Forget Password Email)
 
     //Send Reset Link
-    private void sendPasswordResetLink(Object email) {
+    private void sendPasswordResetLink(String email) {
+        try {
+            emailService.sendPasswordResetLink(email);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Password reset link sent to: " + email);
     }
     //Forget Password Ends
@@ -145,7 +144,7 @@ public class LoginController {
 
     }
 
-    private void GUILoader(URL fxmlLocation, Button btnAction) throws IOException {
+    protected static void GUILoader(URL fxmlLocation, Button btnAction) throws IOException {
         FXMLLoader loader = new FXMLLoader(fxmlLocation);
         Parent root = loader.load();
         Scene scene = new Scene(root);

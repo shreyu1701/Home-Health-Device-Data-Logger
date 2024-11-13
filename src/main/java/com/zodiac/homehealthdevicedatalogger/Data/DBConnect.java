@@ -8,7 +8,11 @@ public class DBConnect {
         if (con != null) {
             System.out.println("Connected to database");
             try{
-                con.close();
+                Statement stm = con.createStatement();
+                ResultSet rs = stm.executeQuery("select * from author");
+                while (rs.next()) {
+                    System.out.println(rs.getString(1) + "," + rs.getString(2) + "," + rs.getString(3));
+                }
             }
             catch(SQLException e){
                 e.printStackTrace();
@@ -22,9 +26,9 @@ public class DBConnect {
     public static Connection getConnection() {
         Connection connection = null;
         try{
-            String url = "";
-            String user = "";
-            String password = "";
+            String url = "jdbc:oracle:thin:@calvin.humber.ca:1521:grok";
+            String user = "n01660845";
+            String password = "oracle";
             connection = DriverManager.getConnection(url, user , password);
             return connection;
         }

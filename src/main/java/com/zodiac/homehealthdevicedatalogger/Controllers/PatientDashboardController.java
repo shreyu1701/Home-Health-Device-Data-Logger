@@ -2,6 +2,8 @@ package com.zodiac.homehealthdevicedatalogger.Controllers;
 
 import com.zodiac.homehealthdevicedatalogger.Data.UserDataManager;
 import com.zodiac.homehealthdevicedatalogger.MainApplication;
+import static com.zodiac.homehealthdevicedatalogger.Controllers.LoginController.GUILoader;
+
 import com.zodiac.homehealthdevicedatalogger.Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class PatientDashboardController {
+    public Button btnAddHealthData;
     @FXML
     private Button btnPatientLogout;
     @FXML
@@ -42,13 +45,7 @@ public class PatientDashboardController {
     public void handleAddHealthData(ActionEvent mouseEvent) throws IOException {
 
         URL fxmlLocation = getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/AddHealthData.fxml");
-        FXMLLoader loader = new FXMLLoader(fxmlLocation);
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
-
+        GUILoader(fxmlLocation,btnAddHealthData);
     }
 
     static void logout(Button btnPatientLogout) throws IOException {

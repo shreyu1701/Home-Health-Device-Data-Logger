@@ -1,20 +1,23 @@
 package com.zodiac.homehealthdevicedatalogger.Controllers;
 
-import com.zodiac.homehealthdevicedatalogger.MainApplication;
 import com.zodiac.homehealthdevicedatalogger.Models.User;
 import com.zodiac.homehealthdevicedatalogger.Data.UserDataManager;
+import com.zodiac.homehealthdevicedatalogger.Validation.InputValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 
+import static com.zodiac.homehealthdevicedatalogger.Controllers.LoginController.GUILoader;
+
 public class SignUpController {
 
+    @FXML
+    public Button btnBackLogin;
+    @FXML
+    private TextField txtUniqueID;
     @FXML
     private TextField txtFirstName;
     @FXML
@@ -28,6 +31,8 @@ public class SignUpController {
     @FXML
     private ChoiceBox choiceRole;
     @FXML
+    private ChoiceBox choiceBloodGroup;
+    @FXML
     private TextField txtEmail;
     @FXML
     private PasswordField paswdPassword;
@@ -38,41 +43,50 @@ public class SignUpController {
     @FXML
     private Label errorLabel;
 
+
+    InputValidator inputValidator = new InputValidator();
+
+
     // Sign-Up Button Starts
     @FXML
     public void handleSignUp(ActionEvent actionEvent) throws IOException {
+        String id = txtUniqueID.getId();
         String firstName = txtFirstName.getText().trim();
         String lastName = txtLastName.getText().trim();
         String age = txtAge.getText().trim();
         String phone = txtPhoneNumber.getText().trim();
         String gender = (String) choiceGender.getValue();
         String role = (String) choiceRole.getValue();
+        String bloodGroup = (String) choiceBloodGroup.getValue();
         String email = txtEmail.getText().trim();
         String password = paswdPassword.getText().trim();
         String confirmPassword = paswdConfirmPassword.getText().trim();
 
         // Validate inputs
-        if (!isValidName(firstName)) {
+        if (!inputValidator.isValidName(firstName)) {
             errorLabel.setText("Invalid first name.");
-        } else if (!isValidName(lastName)) {
+        } else if (!inputValidator.isValidName(lastName)) {
             errorLabel.setText("Invalid last name.");
-        } else if (!isValidAge(age)) {
+        } else if (!inputValidator.isValidAge(age)) {
             errorLabel.setText("Invalid age.");
-        } else if (!isValidPhoneNumber(phone)) {
+        } else if (!inputValidator.isValidPhoneNumber(phone)) {
             errorLabel.setText("Invalid phone number.");
         } else if (gender == null) {
             errorLabel.setText("Please select a gender.");
         } else if (role == null) {
             errorLabel.setText("Please select a role.");
-        } else if (!isValidEmail(email)) {
+        } else if (!inputValidator.isValidEmail(email)) {
+        } else if (bloodGroup == null) {
+            errorLabel.setText("Please select a blood group.");
+        } else if (!inputValidator.isValidEmail(email)) {
             errorLabel.setText("Invalid email format.");
-        } else if (!isValidPassword(password)) {
-            errorLabel.setText("Password must be at least 8 characters long.");
+        } else if (!String.valueOf(inputValidator.isValidPassword(password)).isEmpty()) {
+            errorLabel.setText(inputValidator.isValidPassword(password));
         } else if (!password.equals(confirmPassword)) {
             errorLabel.setText("Passwords do not match.");
         } else {
 
-            User user = new User(firstName, lastName, age, phone, gender, role, email, password, confirmPassword);
+            User user = new User(id , firstName, lastName, age, phone, gender, role, bloodGroup,  email, password, confirmPassword);
 
             UserDataManager userDataManager = new UserDataManager();
             userDataManager.saveUser(user);
@@ -86,36 +100,6 @@ public class SignUpController {
         }
     }
 
-    // Helper method to validate name
-    private boolean isValidName(String name) {
-        return name != null && !name.trim().isEmpty() && name.matches("[a-zA-Z]+");
-    }
-
-    // Helper method to validate age (must be a number)
-    private boolean isValidAge(String age) {
-        try {
-            int ageNumber = Integer.parseInt(age);
-            return ageNumber > 0;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    // Helper method to validate phone number (basic pattern)
-    private boolean isValidPhoneNumber(String phone) {
-        return phone != null && phone.matches("\\d{10}");
-    }
-
-    // Helper method to validate email
-    private boolean isValidEmail(String email) {
-        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        return email != null && email.matches(emailPattern);
-    }
-
-    // Helper method to validate password
-    private boolean isValidPassword(String password) {
-        return password != null && password.length() >= 8;
-    }
 
     // Helper method to clear form after successful sign-up
     private void clearForm() {
@@ -125,9 +109,15 @@ public class SignUpController {
         txtPhoneNumber.clear();
         choiceGender.setValue(null);
         choiceRole.setValue(null);
+        choiceBloodGroup.setValue(null);
         txtEmail.clear();
         paswdPassword.clear();
         paswdConfirmPassword.clear();
+    }
+
+    public void handleBackLogin(ActionEvent actionEvent) throws IOException {
+        URL fxmlLocation = getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/Login.fxml");
+        GUILoader(fxmlLocation, btnBackLogin);
     }
 
     //Sign-Up Button Ends

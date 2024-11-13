@@ -1,24 +1,66 @@
 [
   {
-    "role": "Patient",
-    "email": "patient@test.com",
-    "age": "25",
-    "phone": "9876543210",
-    "gender": "Female",
-    "lastName": "role",
-    "confirmPassword": "patient123",
-    "firstName": "role",
-    "password": "patient123"
+    "age": "23",
+    "bloodGroup": "AB+",
+    "confirmPassword": "Shreyansh@2210",
+    "email": "shreyanshkoladiyas.k@gmail.com",
+    "firstName": "Shreyansh",
+    "gender": "Male",
+    "id": "UID_1731376148730_672",
+    "lastName": "Koladiya",
+    "password": "Shreyansh@2210",
+    "phone": "3658838766",
+    "role": "patient"
   },
   {
-    "role": "Technician",
-    "email": "technician@test.com",
-    "age": "65",
-    "phone": "9876543210",
+    "age": "23",
+    "bloodGroup": "O-",
+    "confirmPassword": "Shreyansh@2210",
+    "email": "Shreyanshkoladiyas.k@gmail.com",
+    "firstName": "ShreyanshH",
     "gender": "Male",
-    "lastName": "tech",
-    "confirmPassword": "technician123",
-    "firstName": "tech",
-    "password": "technician123"
-  }
-]
+    "id": "UID_1731376148736_377",
+    "lastName": "Koladiya",
+    "password": "Shreyansh@2210",
+    "phone": "3658838766",
+    "role": "Technician"
+  },
+  {
+    "age": "26",
+    "bloodGroup": "B-",
+    "confirmPassword": "test1234",
+    "email": "test@test.com",
+    "firstName": "test",
+    "gender": "Female",
+    "id": "UID_1731376148736_21",
+    "lastName": "tets",
+    "password": "test1234",
+    "phone": "3658875546",
+    "role": "Technician"
+  },
+  {
+    "age": "6",
+    "bloodGroup": "A+",
+    "confirmPassword": "admin123",
+    "email": "test@admin.com",
+    "firstName": "test",
+    "gender": "Male",
+    "id": "UID_1731376148736_93",
+    "lastName": "test",
+    "password": "admin123",
+    "phone": "6587451220",
+    "role": "Technician"
+  },
+  {
+    "age": "596",
+    "bloodGroup": "A-",
+    "confirmPassword": "Patient@123",
+    "email": "test@patient.com",
+    "firstName": "vrad",
+    "gender": "Female",
+    "id": "UID_1731376148736_739",
+    "lastName": "hady",
+    "password": "Patient@123",
+    "phone": "9865321100",
+    "role": "Patient"
+  }]
