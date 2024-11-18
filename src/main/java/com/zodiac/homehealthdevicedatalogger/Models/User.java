@@ -7,7 +7,7 @@ public class User {
     private String Id;
     private String FirstName;
     private String LastName;
-    private String Age;
+    private int Age;
     private String Phone;
     private String Gender;
     private String Role;
@@ -15,13 +15,14 @@ public class User {
     private String Email;
     private String Password;
     private String ConfirmPassword;
+    private String RoleID;
 
     public User() {
         super();
     }
 
     // Constructor
-    public User(String id, String firstName, String lastName, String age, String phone, String gender, String role, String BloodGroup , String email, String password, String confirmPassword) {
+    public User(String id, String firstName, String lastName, int age, String phone, String gender, String role, String BloodGroup, String email, String password, String confirmPassword, String RoleID) {
         this.Id = id;
         this.FirstName = firstName;
         this.LastName = lastName;
@@ -33,13 +34,10 @@ public class User {
         this.Email = email;
         this.Password = password;
         this.ConfirmPassword = confirmPassword;
+        this.RoleID = RoleID;
     }
 
-
-
-    public String getId() {
-        return "UID_" + System.currentTimeMillis() + "_" + (int)(Math.random() * 1000);
-    }
+    
 
     public String getFirstName() {
         return FirstName;
@@ -57,11 +55,11 @@ public class User {
         LastName = lastName;
     }
 
-    public String getAge() {
+    public int getAge() {
         return Age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         Age = age;
     }
 
@@ -89,9 +87,13 @@ public class User {
         Role = role;
     }
 
-    public String getBloodGroup() { return BloodGroup;}
+    public String getBloodGroup() {
+        return BloodGroup;
+    }
 
-    public void setBloodGroup(String bloodGroup) { BloodGroup = bloodGroup; }
+    public void setBloodGroup(String bloodGroup) {
+        BloodGroup = bloodGroup;
+    }
 
     public String getEmail() {
         return Email;
@@ -109,6 +111,14 @@ public class User {
         Password = password;
     }
 
+    public String getRoleID() {
+        return RoleID;
+    }
+
+    public void setRoleID(String roleID) {
+        RoleID = roleID;
+    }
+
     public String getConfirmPassword() {
         return ConfirmPassword;
     }
@@ -117,5 +127,9 @@ public class User {
         ConfirmPassword = confirmPassword;
     }
 
+
+    public String getId() {
+        return Id;
+    }
 }
 

@@ -32,36 +32,23 @@ public class TechnicianDashboardController  {
 
     private static final String FILE_PATH = "UserData.json";
     private ObjectMapper mapper = new ObjectMapper();
-
+    User technicianData;
     public void initialize() {
-        loadTechnicianData();
+        loadTechnicianData(technicianData);
     }
 
-    private void loadTechnicianData() {
-        try {
-            // Read data from JSON file and map it to User class
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            // Load the JSON data (this could be from a file, API, etc.)
-            String jsonData = new String(Files.readAllBytes(Paths.get("UserData.json")));
-
-            // Deserialize into a list of User objects
-            List<User> users = objectMapper.readValue(jsonData, new TypeReference<List<User>>(){});
-
-            // Process the list as needed (e.g., update UI, etc.)
-            for (User user : users) {
-                System.out.println(user.getFirstName() + " " + user.getLastName());
-            }
-            // Set label values
-//            lblFullName.setText(user.getFirstName() + " " + user.getLastName());
-//            lblAge.setText(user.getAge());
-//            lblGender.setText(user.getGender());
-//            lblBloodGroup.setText(user.getBloodGroup());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed to load technician data.");
+    public void loadTechnicianData(User technicianData) {
+        if (null != technicianData) {
+            lblFullName.setText(technicianData.getFirstName() + " " + technicianData.getLastName());
+            lblAge.setText(String.valueOf(technicianData.getAge()));
+            //  emailLabel.setText("Email: "+patientData.getEmail());
+            lblGender.setText(technicianData.getGender());
+            lblBloodGroup.setText(technicianData.getBloodGroup());
+        } else {
+            // Handle null user scenario if needed, for instance, show an error or default text
+            System.out.println("User data is null.");
         }
+
     }
 
 

@@ -10,16 +10,19 @@ module com.zodiac.homehealthdevicedatalogger {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires com.fasterxml.jackson.databind;
-    requires java.mail;
+	requires java.mail;
     requires com.google.gson;
-    requires java.sql;
+	requires com.fasterxml.jackson.datatype.jsr310;
+	requires com.fasterxml.jackson.databind;
+	requires java.sql;
 
-    opens com.zodiac.homehealthdevicedatalogger.Controllers to javafx.fxml;
+	opens com.zodiac.homehealthdevicedatalogger.Controllers to javafx.fxml;
     opens com.zodiac.homehealthdevicedatalogger.Models to com.fasterxml.jackson.databind;
+    opens com.zodiac.homehealthdevicedatalogger.Data to com.fasterxml.jackson.databind;
 
     exports com.zodiac.homehealthdevicedatalogger.Controllers;
     exports com.zodiac.homehealthdevicedatalogger.Models;
     exports com.zodiac.homehealthdevicedatalogger;
 
+    exports com.zodiac.homehealthdevicedatalogger.Util;
 }

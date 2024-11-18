@@ -2,6 +2,8 @@ package com.zodiac.homehealthdevicedatalogger.Controllers;
 
 import com.zodiac.homehealthdevicedatalogger.Models.User;
 import com.zodiac.homehealthdevicedatalogger.Data.UserDataManager;
+import com.zodiac.homehealthdevicedatalogger.Util.IDGenerator;
+import com.zodiac.homehealthdevicedatalogger.Util.Util;
 import com.zodiac.homehealthdevicedatalogger.Validation.InputValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +11,7 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 
 import static com.zodiac.homehealthdevicedatalogger.Controllers.LoginController.GUILoader;
 
@@ -16,8 +19,8 @@ public class SignUpController {
 
     @FXML
     public Button btnBackLogin;
-    @FXML
-    private TextField txtUniqueID;
+//    @FXML
+//    private TextField txtUniqueID;
     @FXML
     private TextField txtFirstName;
     @FXML
@@ -45,15 +48,17 @@ public class SignUpController {
 
 
     InputValidator inputValidator = new InputValidator();
+    IDGenerator idGenerator = new IDGenerator();
 
+    Util util = new Util();
 
     // Sign-Up Button Starts
     @FXML
-    public void handleSignUp(ActionEvent actionEvent) throws IOException {
-        String id = txtUniqueID.getId();
+    public void handleSignUp(ActionEvent actionEvent) throws IOException, SQLException {
+      //  String id = getId();
         String firstName = txtFirstName.getText().trim();
         String lastName = txtLastName.getText().trim();
-        String age = txtAge.getText().trim();
+        int age = Integer.parseInt(txtAge.getText().trim());
         String phone = txtPhoneNumber.getText().trim();
         String gender = (String) choiceGender.getValue();
         String role = (String) choiceRole.getValue();
@@ -61,6 +66,7 @@ public class SignUpController {
         String email = txtEmail.getText().trim();
         String password = paswdPassword.getText().trim();
         String confirmPassword = paswdConfirmPassword.getText().trim();
+        String roleId = idGenerator.generateNewId(role);
 
         // Validate inputs
         if (!inputValidator.isValidName(firstName)) {
@@ -85,8 +91,8 @@ public class SignUpController {
         } else if (!password.equals(confirmPassword)) {
             errorLabel.setText("Passwords do not match.");
         } else {
-
-            User user = new User(id , firstName, lastName, age, phone, gender, role, bloodGroup,  email, password, confirmPassword);
+            String uniqueId = util.getId();
+            User user = new User(uniqueId , firstName, lastName, age, phone, gender, role, bloodGroup,  email, password, confirmPassword,roleId);
 
             UserDataManager userDataManager = new UserDataManager();
             userDataManager.saveUser(user);

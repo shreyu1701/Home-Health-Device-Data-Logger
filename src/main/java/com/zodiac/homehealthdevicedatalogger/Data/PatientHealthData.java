@@ -3,21 +3,24 @@ package com.zodiac.homehealthdevicedatalogger.Data;
 import java.time.LocalDate;
 
 public class PatientHealthData {
-
     private LocalDate date;
     private String bloodPressure;
-    private int sugarLevel;
-    private int heartRate;
-    private int oxygenLevel;
-    private String comments;
+    private String sugarLevel;
+    private String heartRate;
+    private String oxygenLevel;
+    private String comment;
 
-    public PatientHealthData(LocalDate date, String bloodPressure, int sugarLevel, int heartRate, int oxygenLevel, String comments) {
+    // Default constructor (no-argument constructor)
+    public PatientHealthData() {
+    }
+    // Constructor
+    public PatientHealthData(LocalDate date, String bloodPressure, String sugarLevel, String heartRate, String oxygenLevel, String comment) {
         this.date = date;
         this.bloodPressure = bloodPressure;
         this.sugarLevel = sugarLevel;
         this.heartRate = heartRate;
         this.oxygenLevel = oxygenLevel;
-        this.comments = comments;
+        this.comment = comment;
     }
 
     // Getters and Setters
@@ -25,6 +28,7 @@ public class PatientHealthData {
         return date;
     }
 
+    // No need for a String setter for date, Jackson will map it automatically
     public void setDate(LocalDate date) {
         this.date = date;
     }
@@ -37,36 +41,36 @@ public class PatientHealthData {
         this.bloodPressure = bloodPressure;
     }
 
-    public int getSugarLevel() {
+    public String getSugarLevel() {
         return sugarLevel;
     }
 
-    public void setSugarLevel(int sugarLevel) {
+    public void setSugarLevel(String sugarLevel) {
         this.sugarLevel = sugarLevel;
     }
 
-    public int getHeartRate() {
+    public String getHeartRate() {
         return heartRate;
     }
 
-    public void setHeartRate(int heartRate) {
+    public void setHeartRate(String heartRate) {
         this.heartRate = heartRate;
     }
 
-    public int getOxygenLevel() {
+    public String getOxygenLevel() {
         return oxygenLevel;
     }
 
-    public void setOxygenLevel(int oxygenLevel) {
+    public void setOxygenLevel(String oxygenLevel) {
         this.oxygenLevel = oxygenLevel;
     }
 
-    public String getComments() {
-        return comments;
+    public String getComment() {
+        return comment;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Override
@@ -74,10 +78,10 @@ public class PatientHealthData {
         return "PatientHealthData{" +
                 "date=" + date +
                 ", bloodPressure='" + bloodPressure + '\'' +
-                ", sugarLevel=" + sugarLevel +
-                ", heartRate=" + heartRate +
-                ", oxygenLevel=" + oxygenLevel +
-                ", comments='" + comments + '\'' +
+                ", sugarLevel='" + sugarLevel + '\'' +
+                ", heartRate='" + heartRate + '\'' +
+                ", oxygenLevel='" + oxygenLevel + '\'' +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 }

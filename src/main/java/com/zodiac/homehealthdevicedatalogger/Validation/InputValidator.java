@@ -36,9 +36,9 @@ public class InputValidator {
     }
 
     // Helper method to validate age (must be a number)
-    public boolean isValidAge(String age) {
+    public boolean isValidAge(int age) {
         try {
-            int ageNumber = Integer.parseInt(age);
+            int ageNumber = age;
             return ageNumber > 0;
         } catch (NumberFormatException e) {
             return false;

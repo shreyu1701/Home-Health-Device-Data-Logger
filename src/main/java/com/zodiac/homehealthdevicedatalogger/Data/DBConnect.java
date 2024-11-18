@@ -1,8 +1,12 @@
 package com.zodiac.homehealthdevicedatalogger.Data;
 
+import com.zodiac.homehealthdevicedatalogger.Models.User;
+
 import java.sql.*;
 
 public class DBConnect {
+
+    User user = new User();
     public static void main(String[] args) {
         Connection con = DBConnect.getConnection();
         if (con != null) {

@@ -1,7 +1,10 @@
 package com.zodiac.homehealthdevicedatalogger.Controllers;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zodiac.homehealthdevicedatalogger.Util.EmailService;
+import com.zodiac.homehealthdevicedatalogger.Util.IDGenerator;
+import com.zodiac.homehealthdevicedatalogger.Util.Util;
 import com.zodiac.homehealthdevicedatalogger.Validation.InputValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,8 +13,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import com.zodiac.homehealthdevicedatalogger.Data.UserDataManager;
 import com.zodiac.homehealthdevicedatalogger.Models.User;
@@ -37,7 +43,11 @@ public class LoginController {
     private final UserDataManager userDataManager = new UserDataManager();
     InputValidator inputValidator = new InputValidator();
     EmailService emailService = new EmailService();
+    Util util = new Util();
+    IDGenerator idGenerator = new IDGenerator();
 
+    PatientDashboardController patientDashboardController = new PatientDashboardController();
+    TechnicianDashboardController technicianDashboardController = new TechnicianDashboardController();
     // Login button Starts
     @FXML
     public void handleLogin(ActionEvent mouseEvent) throws IOException {
@@ -53,21 +63,69 @@ public class LoginController {
 
             // Validate login
             User user = inputValidator.validateUser(email, password);
-            if (user != null) {
-                if ("Technician".equals(user.getRole())) {
-                    // Redirect to Technician Dashboard
-                    URL fxmlLocation = getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/TechnicianDashboard.fxml");
-                    GUILoader(fxmlLocation, btnLoginSubmit);
 
-                } else if ("Patient".equals(user.getRole())) {
-                    // Redirect to Patient Dashboard
-                    URL fxmlLocation = getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/PatientDashboard.fxml");
-                    GUILoader(fxmlLocation, btnLoginSubmit);
+        if (user != null) {
+            // If user is a Technician
+            if ("Technician".equals(user.getRole())) {
+                // Redirect to Technician Dashboard
+                User technicianData = getUserData(user.getRoleID());
+                if (technicianData != null) {
+                    technicianDashboardController.loadTechnicianData(technicianData);
                 }
-            } else {
-                showAlert("Login Failed", "Invalid email or password.");
+                URL fxmlLocation = getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/TechnicianDashboard.fxml");
+                GUILoader(fxmlLocation, btnLoginSubmit);
+
+            } else if ("Patient".equals(user.getRole())) {
+                // Fetch user-specific data from UserData.json
+                User patientData = getUserData(user.getRoleID());
+
+                if (patientData != null) {
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/PatientDashboard.fxml"));
+                    Parent root = loader.load();
+                    // Get the PatientDashboardController instance
+                    PatientDashboardController patientDashboardController = loader.getController();
+
+                    // Pass patient data to PatientDashboardController
+                    patientDashboardController.loadUserData(patientData);
+
+                    // Set the scene and display
+                    Stage stage = (Stage) btnLoginSubmit.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } else {
+                    showAlert("Error", "Patient data not found.");
+                }
+            }
+        } else {
+            showAlert("Login Failed", "Invalid email or password.");
+        }
+
+
+        }
+
+    private void passPatientDataToDashboard(User patientData) {
+    }
+
+
+    // Method to fetch patient-specific data from UserData.json based on user ID
+    private User getUserData(String userId) throws IOException {
+        // Initialize ObjectMapper to parse the JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        File userFile = new File("UserData.json");
+
+        // Parse the JSON file into UserData object
+        List<User> users = objectMapper.readValue(userFile, objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+
+        // Iterate over the list of users and find the matching userId
+        for (User user : users) {
+            if (null!=user.getRoleID() && user.getRoleID().equals(userId)) {
+                return user; // Return the matching user data
             }
         }
+        return null;
+    }
+
 
 
 
@@ -95,7 +153,7 @@ public class LoginController {
 
                 sendPasswordResetLink(email);
 
-                showConfirmationDialog("Password reset link has been sent to your email.");
+                showConfirmationDialog("Password has been sent to your email.");
             } else {
                 showErrorDialog("Invalid email address. Please try again.");
             }

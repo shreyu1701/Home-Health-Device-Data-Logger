@@ -98,9 +98,9 @@
                   <Tooltip text="Click to create your account" />
                </tooltip>
             </Button>
-            <Label fx:id="errorLabel" layoutX="201.0" layoutY="68.0" prefHeight="21.0" prefWidth="297.0" textFill="RED">
+            <Label fx:id="errorLabel" layoutX="265.0" layoutY="66.0" prefHeight="26.0" prefWidth="297.0" textFill="RED">
                <font>
-                  <Font size="15.0" />
+                  <Font name="System Bold" size="15.0" />
                </font></Label>
             <Button fx:id="btnBackLogin" layoutX="163.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleBackLogin" prefHeight="43.0" prefWidth="119.0" style="-fx-background-color: red;" text="Back to Login" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
                <font>

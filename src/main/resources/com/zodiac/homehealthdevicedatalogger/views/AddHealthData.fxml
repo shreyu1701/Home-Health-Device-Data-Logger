@@ -85,8 +85,8 @@
         <TextArea fx:id="commentsArea" layoutX="150.0" layoutY="255.0" prefHeight="60.0" prefWidth="300.0" promptText="Add any additional notes here" />
 
         <!-- Save Button -->
-        <Button layoutX="198.0" layoutY="330.0" mnemonicParsing="false" onAction="#saveHealthData" prefHeight="30.0" prefWidth="59.0" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Save" />
-            <Button fx:id="btnCancel" layoutX="284.0" layoutY="329.0" mnemonicParsing="false" onAction="#cancelHealthData" style="-fx-font-size: 14px; -fx-background-color: #f44336; -fx-text-fill: white;" text="Cancel" />
+        <Button fx:id="btnSaveHealthData" layoutX="198.0" layoutY="330.0" mnemonicParsing="false" onAction="#saveHealthData" prefHeight="30.0" prefWidth="59.0" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Save" />
+            <Button fx:id="btnCancelHealthData" layoutX="284.0" layoutY="329.0" mnemonicParsing="false" onAction="#cancelHealthData" style="-fx-font-size: 14px; -fx-background-color: #f44336; -fx-text-fill: white;" text="Cancel" />
       </children>
     </AnchorPane>
 

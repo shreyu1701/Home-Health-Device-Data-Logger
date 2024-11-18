@@ -33,15 +33,24 @@
           <items>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="401.0" prefWidth="127.0">
               <children>
+                <Label fx:id="nameLabel" layoutX="50.0" layoutY="155.0" prefHeight="18.0" prefWidth="125.0" text="Shreyansh Koladiya" />
                 <Label layoutX="4.0" layoutY="155.0" prefHeight="18.0" prefWidth="50.0" text="Name :" />
-                <Label layoutX="50.0" layoutY="155.0" prefHeight="18.0" prefWidth="125.0" text="Shreyansh Koladiya" />
                 <Label layoutX="5.0" layoutY="184.0" text="Age :" />
-                <Label layoutX="40.0" layoutY="184.0" prefHeight="18.0" prefWidth="125.0" text="22" />
+                <Label fx:id="ageLabel" layoutX="40.0" layoutY="184.0" prefHeight="18.0" prefWidth="125.0" text="22" />
                 <Label layoutX="6.0" layoutY="216.0" text="Gender :" />
-                <Label layoutX="59.0" layoutY="216.0" prefHeight="18.0" prefWidth="101.0" text="Male" />
+                <Label fx:id="genderLabel" layoutX="59.0" layoutY="216.0" prefHeight="18.0" prefWidth="101.0" text="Male" />
                 <Label layoutX="7.0" layoutY="247.0" prefHeight="18.0" prefWidth="91.0" text="Blood Group :" />
+                <Label fx:id="bloodGroupLabel" layoutX="93.0" layoutY="247.0" prefHeight="18.0" prefWidth="80.0" text="AB+" />
+
+<!--                <Label fx:id="nameLabel" layoutX="50.0" layoutY="155.0" prefHeight="18.0" prefWidth="125.0" text="Name :" />-->
+<!--                <Label fx:id="ageLabel" layoutX="40.0" layoutY="184.0" prefHeight="18.0" prefWidth="125.0" text="Age :" />-->
+<!--                <Label fx:id="genderLabel" layoutX="59.0" layoutY="216.0" prefHeight="18.0" prefWidth="101.0" text="Gender: " />-->
+<!--                <Label fx:id="bloodGroupLabel" layoutX="93.0" layoutY="247.0" prefHeight="18.0" prefWidth="80.0" text="Blood Group: " />-->
+<!--                <Label fx:id="emailLabel" layoutX="40.0" layoutY="270.0" text="Email: " />-->
+<!--                <Button fx:id="btnPatientLogout" layoutX="64.0" layoutY="357.0" mnemonicParsing="false" onAction="#handlePatientLogout" style="-fx-background-color: blue;" text="Logout" textFill="WHITE" />-->
+
                 <Button fx:id="btnPatientLogout" layoutX="64.0" layoutY="357.0" mnemonicParsing="false" onAction="#handlePatientLogout" style="-fx-background-color: blue;" text="Logout" textFill="WHITE" />
-                <Label layoutX="93.0" layoutY="247.0" prefHeight="18.0" prefWidth="80.0" text="AB+" />
+
 <!--                Avatar-->
                 <Separator layoutY="146.0" prefHeight="3.0" prefWidth="180.0" />
                 <Label layoutX="55.0" layoutY="108.0" text="Profile Picture">
