@@ -1,17 +1,18 @@
 package com.zodiac.homehealthdevicedatalogger.Models;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Patient {
     private LocalDate date;
     private String bloodPressure;
     private String sugarLevel;
-    private String heartRate;
-    private String oxygenLevel;
+    private int heartRate;
+    private int oxygenLevel;
     private String comments;
 
     // Constructor
-    public Patient(LocalDate date, String bloodPressure, String sugarLevel, String heartRate, String oxygenLevel, String comments) {
+    public Patient(LocalDate date, String bloodPressure, String sugarLevel, int heartRate, int oxygenLevel, String comments) {
         this.date = date;
         this.bloodPressure = bloodPressure;
         this.sugarLevel = sugarLevel;
@@ -19,6 +20,16 @@ public class Patient {
         this.oxygenLevel = oxygenLevel;
         this.comments = comments;
     }
+
+    public Patient(LocalDate date, String bloodPressure, String sugarLevel, int heartRate, int oxygenLevel) {
+        this.date = date;
+        this.bloodPressure = bloodPressure;
+        this.sugarLevel = sugarLevel;
+        this.heartRate = heartRate;
+        this.oxygenLevel = oxygenLevel;
+    }
+
+
 
     // Getters and Setters
     public LocalDate getDate() {
@@ -45,19 +56,19 @@ public class Patient {
         this.sugarLevel = sugarLevel;
     }
 
-    public String getHeartRate() {
+    public int getHeartRate() {
         return heartRate;
     }
 
-    public void setHeartRate(String heartRate) {
+    public void setHeartRate(int heartRate) {
         this.heartRate = heartRate;
     }
 
-    public String getOxygenLevel() {
+    public int getOxygenLevel() {
         return oxygenLevel;
     }
 
-    public void setOxygenLevel(String oxygenLevel) {
+    public void setOxygenLevel(int oxygenLevel) {
         this.oxygenLevel = oxygenLevel;
     }
 

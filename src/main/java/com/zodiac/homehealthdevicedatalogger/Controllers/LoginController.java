@@ -2,10 +2,16 @@ package com.zodiac.homehealthdevicedatalogger.Controllers;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zodiac.homehealthdevicedatalogger.Data.DBConnect;
+import com.zodiac.homehealthdevicedatalogger.Data.PatientHealthData;
+//import com.zodiac.homehealthdevicedatalogger.Models.Patient;
+import com.zodiac.homehealthdevicedatalogger.Models.UserSession;
 import com.zodiac.homehealthdevicedatalogger.Util.EmailService;
 import com.zodiac.homehealthdevicedatalogger.Util.IDGenerator;
 import com.zodiac.homehealthdevicedatalogger.Util.Util;
 import com.zodiac.homehealthdevicedatalogger.Validation.InputValidator;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +23,10 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import com.zodiac.homehealthdevicedatalogger.Data.UserDataManager;
@@ -49,60 +59,162 @@ public class LoginController {
     PatientDashboardController patientDashboardController = new PatientDashboardController();
     TechnicianDashboardController technicianDashboardController = new TechnicianDashboardController();
     // Login button Starts
+
     @FXML
     public void handleLogin(ActionEvent mouseEvent) throws IOException {
+        String email = txtEmail.getText();
+        String password = txtPassword.getText();
 
+        if (email.isEmpty() || password.isEmpty()) {
+            showAlert("Error", "Please enter both email and password.");
+            return;
+        }
 
-            String email = txtEmail.getText();
-            String password = txtPassword.getText();
-
-            if (email.isEmpty() || password.isEmpty()) {
-                showAlert("Error", "Please enter both email and password.");
-                return;
-            }
-
-            // Validate login
-            User user = inputValidator.validateUser(email, password);
+        // Validate login
+        User user = inputValidator.validateUser(email, password);
 
         if (user != null) {
-            // If user is a Technician
+            User currentUser = new User(user.getId(), user.getFirstName());
+            UserSession.getInstance().setCurrentUser(currentUser);
+
+//            if ("Technician".equals(user.getRole())) {
+//                // Technician Dashboard
+//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/TechnicianDashboard.fxml"));
+//                Parent root = loader.load();
+//                TechnicianDashboardController technicianDashboardController = loader.getController();
+//                technicianDashboardController.loadTechnicianData(user);
+//
+//                // Set the scene and display
+//                Stage stage = (Stage) btnLoginSubmit.getScene().getWindow();
+//                stage.setScene(new Scene(root));
+//                stage.show();
+
             if ("Technician".equals(user.getRole())) {
-                // Redirect to Technician Dashboard
-                User technicianData = getUserData(user.getRoleID());
-                if (technicianData != null) {
-                    technicianDashboardController.loadTechnicianData(technicianData);
-                }
-                URL fxmlLocation = getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/TechnicianDashboard.fxml");
-                GUILoader(fxmlLocation, btnLoginSubmit);
+                // Load Technician Dashboard
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/TechnicianDashboard.fxml"));
+                Parent root = loader.load();
+                TechnicianDashboardController technicianDashboardController = loader.getController();
+
+                // Load all health data
+                technicianDashboardController.loadTechnicianData(user);
+                technicianDashboardController.loadAllHealthData();
+
+                // Set the scene and display
+                Stage stage = (Stage) btnLoginSubmit.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
 
             } else if ("Patient".equals(user.getRole())) {
-                // Fetch user-specific data from UserData.json
-                User patientData = getUserData(user.getRoleID());
-
-                if (patientData != null) {
-
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/PatientDashboard.fxml"));
-                    Parent root = loader.load();
-                    // Get the PatientDashboardController instance
-                    PatientDashboardController patientDashboardController = loader.getController();
-
-                    // Pass patient data to PatientDashboardController
-                    patientDashboardController.loadUserData(patientData);
-
-                    // Set the scene and display
-                    Stage stage = (Stage) btnLoginSubmit.getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                    stage.show();
+                // Patient Dashboard
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/PatientDashboard.fxml"));
+                Parent root = loader.load();
+                PatientDashboardController patientDashboardController = loader.getController();
+                patientDashboardController.loadUserData(user);
+                if (isHealthDataAvailable(user.getId())) {
+                    // Pass patient data if health records exist
+                    patientDashboardController.initialize(user);
                 } else {
-                    showAlert("Error", "Patient data not found.");
+                    // Clear dashboard for empty data
+                    patientDashboardController.initialize(user);
+                    patientDashboardController.clearDashboard(); // Custom method to show empty state
                 }
+
+                // Set the scene and display
+                Stage stage = (Stage) btnLoginSubmit.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+
+            } else {
+                showAlert("Error", "User role not recognized.");
             }
         } else {
             showAlert("Login Failed", "Invalid email or password.");
         }
+    }
 
 
+
+    private boolean isHealthDataAvailable(String userId) {
+        String query = "SELECT COUNT(*) FROM HealthData WHERE USER_ID = ?";
+        try (Connection connection = DBConnect.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0; // Returns true if health data exists
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Database Error", "Failed to fetch health data.");
         }
+        return false;
+    }
+
+
+
+
+
+//    @FXML
+//    public void handleLogin(ActionEvent mouseEvent) throws IOException {
+//
+//
+//            String email = txtEmail.getText();
+//            String password = txtPassword.getText();
+//
+//            if (email.isEmpty() || password.isEmpty()) {
+//                showAlert("Error", "Please enter both email and password.");
+//                return;
+//            }
+//
+//            // Validate login
+//            User user = inputValidator.validateUser(email, password);
+//
+//            User currentUser = new User(user.getId(), user.getFirstName());
+//            UserSession.getInstance().setCurrentUser(currentUser);
+//        if (user != null) {
+//            // If user is a Technician
+//            if ("Technician".equals(user.getRole())) {
+//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/TechnicianDashboard.fxml"));
+//                Parent root = loader.load();
+//                TechnicianDashboardController technicianDashboardController = loader.getController();
+//
+//                technicianDashboardController.loadTechnicianData(user);
+//
+//                // Set the scene and display
+//                Stage stage = (Stage) btnLoginSubmit.getScene().getWindow();
+//                stage.setScene(new Scene(root));
+//                stage.show();
+//
+//
+//            } else if ("Patient".equals(user.getRole())) {
+//
+//                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zodiac/homehealthdevicedatalogger/Views/PatientDashboard.fxml"));
+//                    Parent root = loader.load();
+//
+//
+//                // Get the PatientDashboardController instance
+//                    PatientDashboardController patientDashboardController = loader.getController();
+//
+//                    patientDashboardController.initialize(user);
+//                    // Pass patient data to PatientDashboardController
+//                    patientDashboardController.loadUserData(user);
+//
+//                    // Set the scene and display
+//                    Stage stage = (Stage) btnLoginSubmit.getScene().getWindow();
+//                    stage.setScene(new Scene(root));
+//                    stage.show();
+//                } else {
+//                    showAlert("Error", "Patient data not found.");
+//                }
+//
+//        } else {
+//            showAlert("Login Failed", "Invalid email or password.");
+//        }
+//
+//
+//        }
 
     private void passPatientDataToDashboard(User patientData) {
     }
@@ -128,8 +240,42 @@ public class LoginController {
 
 
 
+//    public void loadAllHealthData() {
+//        String query = "SELECT user_id, data_date, blood_pressure, sugar_level, heart_rate, oxygen_level, comments FROM HealthData";
+//
+//        try (Connection connection = DBConnect.getConnection();
+//             PreparedStatement preparedStatement = connection.prepareStatement(query);
+//             ResultSet resultSet = preparedStatement.executeQuery()) {
+//
+//            ObservableList<PatientHealthData> healthDataList = FXCollections.observableArrayList();
+//
+//            // Map ResultSet to HealthData objects
+//            while (resultSet.next()) {
+//                PatientHealthData healthData = new PatientHealthData(
+//                        resultSet.getString("user_id"),
+//                        resultSet.getDate("data_date").toLocalDate(),
+//                        resultSet.getString("blood_pressure"),
+//                        resultSet.getString("sugar_level"),
+//                        resultSet.getInt("heart_rate"),
+//                        resultSet.getInt("oxygen_level"),
+//                        resultSet.getString("comments")
+//                );
+//                healthDataList.add(healthData);
+//            }
+//
+//            // Bind the data to the TableView
+//            healthRecordsTable.setItems(healthDataList);
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            showAlert("Database Error", "Failed to fetch health data for all users.");
+//        }
+//    }
 
-        // Show alert messages
+
+
+
+    // Show alert messages
         private void showAlert(String title, String message) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(title);

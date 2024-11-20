@@ -96,14 +96,24 @@
                                   </font>
                                 </Label>
                                 <TableView fx:id="healthRecordsTable" layoutX="14.0" layoutY="47.0" prefHeight="139.0" prefWidth="436.0">
+<!--                                  <columns>-->
+<!--                                    <TableColumn prefWidth="66.0" text="Date" />-->
+<!--                                    <TableColumn prefWidth="90.0" text="Blood Pressure" />-->
+<!--                                    <TableColumn prefWidth="72.0" text="Sugar Level" />-->
+<!--                                    <TableColumn prefWidth="68.0" text="Heart Rate" />-->
+<!--                                    <TableColumn prefWidth="85.0" text="Oxygen Level" />-->
+<!--                                    <TableColumn prefWidth="66.0" text="Action" />-->
+<!--                                  </columns>-->
+
                                   <columns>
-                                    <TableColumn prefWidth="66.0" text="Date" />
-                                    <TableColumn prefWidth="90.0" text="Blood Pressure" />
-                                    <TableColumn prefWidth="72.0" text="Sugar Level" />
-                                    <TableColumn prefWidth="68.0" text="Heart Rate" />
-                                    <TableColumn prefWidth="85.0" text="Oxygen Level" />
-                                    <TableColumn prefWidth="66.0" text="Action" />
+                                    <TableColumn fx:id="dateColumn" prefWidth="66.0" text="Date" />
+                                    <TableColumn fx:id="bloodPressureColumn" prefWidth="90.0" text="Blood Pressure" />
+                                    <TableColumn fx:id="sugarLevelColumn" prefWidth="72.0" text="Sugar Level" />
+                                    <TableColumn fx:id="heartRateColumn" prefWidth="68.0" text="Heart Rate" />
+                                    <TableColumn fx:id="oxygenLevelColumn" prefWidth="85.0" text="Oxygen Level" />
+                                    <TableColumn fx:id="columnDelete" prefWidth="66.0" text="Action" />
                                   </columns>
+
                                 </TableView>
                               </children>
                             </AnchorPane>

@@ -15,8 +15,9 @@ module com.zodiac.homehealthdevicedatalogger {
 	requires com.fasterxml.jackson.datatype.jsr310;
 	requires com.fasterxml.jackson.databind;
 	requires java.sql;
+    requires ojdbc10;
 
-	opens com.zodiac.homehealthdevicedatalogger.Controllers to javafx.fxml;
+    opens com.zodiac.homehealthdevicedatalogger.Controllers to javafx.fxml;
     opens com.zodiac.homehealthdevicedatalogger.Models to com.fasterxml.jackson.databind;
     opens com.zodiac.homehealthdevicedatalogger.Data to com.fasterxml.jackson.databind;
 

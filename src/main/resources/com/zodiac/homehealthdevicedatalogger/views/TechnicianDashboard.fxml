@@ -53,7 +53,8 @@
                                                                 <TreeTableColumn prefWidth="61.0" text="Action" />
                                                             </columns>
                                                         </TreeTableView>
-                                          <Button layoutX="371.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddPatient" style="-fx-background-color: blue; -fx-text-fill: white;" text="Add Patient" />
+<!--                                          <Button layoutX="371.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddPatient" style="-fx-background-color: blue; -fx-text-fill: white;" text="Add Patient" />-->
+                                                        <Button fx:id="btnAddPatient" layoutX="371.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddPatient" style="-fx-background-color: blue; -fx-text-fill: white;" text="Add Patient"/>
                                                     </children>
                                                 </AnchorPane>
                                             </content>
@@ -66,17 +67,31 @@
                                                         <Separator layoutY="38.0" prefHeight="9.0" prefWidth="459.0" />
                                                         <TextField layoutX="19.0" layoutY="7.0" prefHeight="26.0" prefWidth="101.0" text="Search #Name" />
                                                         <TextField layoutX="143.0" layoutY="7.0" prefHeight="26.0" prefWidth="80.0" text="Search #ID" />
-                                                        <TreeTableView layoutX="9.0" layoutY="44.0" prefHeight="297.0" prefWidth="446.0">
+
+
+                                                        <TableView fx:id="healthRecordsTable" layoutX="14.0" layoutY="47.0" prefHeight="300.0" prefWidth="600.0">
                                                             <columns>
-                                                                <TreeTableColumn prefWidth="38.0" text="Date" />
-                                                                <TreeTableColumn prefWidth="45.0" text="Name" />
-                                                                <TreeTableColumn prefWidth="87.0" text="Blood Pressure" />
-                                                                <TreeTableColumn prefWidth="48.0" text="Sugar" />
-                                                                <TreeTableColumn prefWidth="70.0" text="Heart Rate" />
-                                                                <TreeTableColumn prefWidth="88.0" text="Oxygen Level" />
-                                                                <TreeTableColumn prefWidth="61.0" text="Action" />
+                                                                <TableColumn fx:id="columnDate" prefWidth="100.0" text="Date" />
+                                                                <TableColumn fx:id="columnUser" prefWidth="100.0" text="User ID" />
+                                                                <TableColumn fx:id="columnBloodPressure" prefWidth="120.0" text="Blood Pressure" />
+                                                                <TableColumn fx:id="columnSugar" prefWidth="100.0" text="Sugar Level" />
+                                                                <TableColumn fx:id="columnHeartRate" prefWidth="100.0" text="Heart Rate" />
+                                                                <TableColumn fx:id="columnOxygen" prefWidth="100.0" text="Oxygen Level" />
+<!--                                                                <TableColumn fx:id="updateColumn" prefWidth="70.0" text="Update" />-->
+                                                                <TableColumn fx:id="columnDelete" prefWidth="66.0" text="Action" />
                                                             </columns>
-                                                        </TreeTableView>
+                                                        </TableView>
+<!--                                                        <TreeTableView layoutX="9.0" layoutY="44.0" prefHeight="297.0" prefWidth="446.0">-->
+<!--                                                            <columns>-->
+<!--                                                                <TreeTableColumn prefWidth="38.0" text="Date" />-->
+<!--                                                                <TreeTableColumn prefWidth="45.0" text="Name" />-->
+<!--                                                                <TreeTableColumn prefWidth="87.0" text="Blood Pressure" />-->
+<!--                                                                <TreeTableColumn prefWidth="48.0" text="Sugar" />-->
+<!--                                                                <TreeTableColumn prefWidth="70.0" text="Heart Rate" />-->
+<!--                                                                <TreeTableColumn prefWidth="88.0" text="Oxygen Level" />-->
+<!--                                                                <TreeTableColumn prefWidth="61.0" text="Action" />-->
+<!--                                                            </columns>-->
+<!--                                                        </TreeTableView>-->
                                                     </children>
                                                 </AnchorPane>
                                             </content>

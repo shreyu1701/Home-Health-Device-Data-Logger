@@ -4,6 +4,8 @@ import com.zodiac.homehealthdevicedatalogger.Data.PatientHealthData;
 import com.zodiac.homehealthdevicedatalogger.Data.PatientHealthDataManager;
 
 
+import com.zodiac.homehealthdevicedatalogger.Models.User;
+import com.zodiac.homehealthdevicedatalogger.Models.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -12,10 +14,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
-
-import static com.zodiac.homehealthdevicedatalogger.Controllers.LoginController.GUILoader;
 
 public class AddHealthDataController {
 
@@ -36,6 +36,8 @@ public class AddHealthDataController {
 	@FXML
 	private TextArea commentsArea;
 
+	private User currentUser;
+
 	@FXML
 	public void initialize() {
 		// Set up tooltips for user guidance
@@ -48,21 +50,27 @@ public class AddHealthDataController {
 		datePicker.setValue(LocalDate.now());
 	}
 
-	public void saveHealthData(ActionEvent actionEvent) throws IOException {
+	public void saveHealthData(ActionEvent actionEvent) throws IOException, SQLException {
 		if (validateInputs()) {
 
+			User currentUser = UserSession.getInstance().getCurrentUser();
 			// If all inputs are valid, proceed with saving data
 			LocalDate date = datePicker.getValue();
 			String bp = bloodPressureField.getText();
 			String sugar = sugarLevelField.getText();
-			String heart = heartRateField.getText();
+			String heartrate = heartRateField.getText();
+			int heart = Integer.parseInt(heartrate) ;
 			String oxygen = oxygenLevelField.getText();
+			int oxygenLevel = Integer.parseInt(oxygen);
 			String comment = commentsArea.getText();
 
-			PatientHealthData healthData = new PatientHealthData(date, bp, sugar, heart, oxygen, comment);
-			PatientHealthDataManager Manager = new PatientHealthDataManager();
 
-			Manager.addHealthData(healthData);
+			if (null!= currentUser){
+				PatientHealthData healthData = new PatientHealthData(date, bp, sugar, heart, oxygenLevel, comment);
+				PatientHealthDataManager Manager = new PatientHealthDataManager();
+				Manager.addHealthData(healthData, currentUser);
+			}
+
 
 			showAlert(AlertType.INFORMATION, "Success", "Data saved successfully!");
 			clearForm();

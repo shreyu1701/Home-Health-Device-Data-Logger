@@ -16,6 +16,7 @@ public class User {
     private String Password;
     private String ConfirmPassword;
     private String RoleID;
+    private User currentUser;
 
     public User() {
         super();
@@ -35,6 +36,19 @@ public class User {
         this.Password = password;
         this.ConfirmPassword = confirmPassword;
         this.RoleID = RoleID;
+    }
+
+    public User(String id, String firstName) {
+        this.Id = id;
+        this.FirstName = firstName;
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+
+    public User getCurrentUser() {
+        return this.currentUser;
     }
 
     
@@ -130,6 +144,9 @@ public class User {
 
     public String getId() {
         return Id;
+    }
+    public void setId(String id) {
+        Id = id;
     }
 }
 

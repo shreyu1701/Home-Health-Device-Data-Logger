@@ -4,29 +4,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+
 import com.zodiac.homehealthdevicedatalogger.Models.User;
 
 public class UserDataManager {
-    private static final String FILE_PATH = "UserData.json";
+
+
+    //private static final String FILE_PATH = "UserData.json";
     String url = "jdbc:oracle:thin:@calvin.humber.ca:1521:grok";
     String username = "n01660845";
     String password = "oracle";
-    // Save a user to the file by appending to the existing list
-//    public void saveUser(User user) {
-//        List<User> users = getAllUsers();
-//        users.add(user);
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            mapper.writeValue(new File(FILE_PATH), users);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
-    public void saveUser(User user) throws SQLException, IOException {
-        String sql = "INSERT INTO USERS (USER_ID, FIRST_NAME, LAST_NAME, AGE, PHONE_NUMBER, GENDER,  EMAIL, PASSWORD ,ROLE_ID , ROLE_NAME) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? , ?)";
+
+    public void saveUser(User user) throws IOException {
+        String sql = "INSERT INTO USERS (USER_ID, FIRST_NAME, LAST_NAME, AGE, PHONE_NUMBER, GENDER,  EMAIL, PASSWORD ,ROLE_ID , ROLE_NAME, BLOOD_GROUP) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(url, username , password);
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -42,6 +34,7 @@ public class UserDataManager {
             statement.setString(8, user.getPassword());
             statement.setString(9, String.valueOf(user.getRoleID()));
             statement.setString(10, String.valueOf(user.getRole()));
+            statement.setString(11, String.valueOf(user.getBloodGroup()));
             System.out.println("Save to DB"+ statement.toString());
 
             statement.executeUpdate();
@@ -51,7 +44,7 @@ public class UserDataManager {
         }
     }
 
-    // Get all users from the JSON file
+    // Get all users from database
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM USERS";
@@ -62,15 +55,18 @@ public class UserDataManager {
 
             while (resultSet.next()) {
                 User user = new User();
+                user.setId(resultSet.getString("USER_ID"));
                 user.setFirstName(resultSet.getString("FIRST_NAME"));
                 user.setLastName(resultSet.getString("LAST_NAME"));
                 user.setAge(resultSet.getInt("AGE"));
-                user.setPhone(resultSet.getString("PHONE"));
+                user.setPhone(resultSet.getString("PHONE_NUMBER"));
                 user.setGender(resultSet.getString("GENDER"));
-                user.setRole(resultSet.getString("ROLE"));
+                user.setRole(resultSet.getString("ROLE_NAME"));
                 user.setEmail(resultSet.getString("EMAIL"));
                 user.setPassword(resultSet.getString("PASSWORD"));
-                user.setConfirmPassword(resultSet.getString("CONFIRM_PASSWORD"));
+                user.setConfirmPassword(resultSet.getString("PASSWORD"));
+                user.setRoleID(resultSet.getString("ROLE_ID"));
+                user.setBloodGroup(resultSet.getString("BLOOD_GROUP"));
 
                 users.add(user);
             }
@@ -78,5 +74,10 @@ public class UserDataManager {
             e.printStackTrace();
         }
         return users;
+    }
+
+    public void getLoggedInUser(User user) {
+
+
     }
 }
