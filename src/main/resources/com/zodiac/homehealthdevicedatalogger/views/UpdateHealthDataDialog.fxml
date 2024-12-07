@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="305.0" prefWidth="368.0" spacing="15" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zodiac.homehealthdevicedatalogger.Controllers.UpdateHealthDataController">
+
+    <!-- Title -->
+    <Label contentDisplay="CENTER" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Update Health Data For Patient" textAlignment="CENTER" />
+
+    <!-- Date -->
+    <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="316.0" spacing="10">
+        <Label text="Date:" />
+        <TextField fx:id="txtDate" depthTest="DISABLE">
+            <tooltip>
+                <Tooltip text="Enter the date in the format YYYY-MM-DD" />
+            </tooltip>
+        </TextField>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+    </HBox>
+
+    <!-- Blood Pressure -->
+    <HBox spacing="10">
+        <Label text="Blood Pressure:" />
+        <TextField fx:id="txtBloodPressure">
+            <tooltip>
+                <Tooltip text="Enter blood pressure as Systolic/Diastolic (e.g., 120/80)" />
+            </tooltip>
+        </TextField>
+    </HBox>
+
+    <!-- Sugar Level -->
+    <HBox spacing="10">
+        <Label text="Sugar Level:" />
+        <TextField fx:id="txtSugarLevel">
+            <tooltip>
+                <Tooltip text="Enter the sugar level in mg/dL" />
+            </tooltip>
+        </TextField>
+    </HBox>
+
+    <!-- Heart Rate -->
+    <HBox spacing="10">
+        <Label text="Heart Rate:" />
+        <TextField fx:id="txtHeartRate">
+            <tooltip>
+                <Tooltip text="Enter the heart rate in beats per minute (bpm)" />
+            </tooltip>
+        </TextField>
+    </HBox>
+
+    <!-- Oxygen Level -->
+    <HBox spacing="10">
+        <Label text="Oxygen Level:" />
+        <TextField fx:id="txtOxygenLevel">
+            <tooltip>
+                <Tooltip text="Enter the oxygen level as a percentage" />
+            </tooltip>
+        </TextField>
+    </HBox>
+
+    <!-- Buttons -->
+    <HBox alignment="center" prefHeight="56.0" prefWidth="368.0" spacing="15">
+        <Button onAction="#handleSave" prefHeight="35.0" prefWidth="72.0" style="-fx-background-color: green; -fx-text-fill: white;" text="Save">
+            <tooltip>
+                <Tooltip text="Click to save the updated health data" />
+            </tooltip>
+        </Button>
+        <Button fx:id="btnCancel" onAction="#handleCancel" prefHeight="37.0" prefWidth="76.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Cancel">
+            <tooltip>
+                <Tooltip text="Click to cancel and discard changes" />
+            </tooltip>
+        </Button>
+    </HBox>
+
+</VBox>

@@ -1,13 +1,21 @@
 package com.zodiac.homehealthdevicedatalogger.Data;
 
+import com.zodiac.homehealthdevicedatalogger.Models.Patient;
 import com.zodiac.homehealthdevicedatalogger.Models.User;
-import com.zodiac.homehealthdevicedatalogger.Models.UserSession;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientHealthDataManager {
+
+	DBConnect dbConnect = new DBConnect();
 
 //	private static final String FILE_PATH = "PatientHealthData.json";
 //	private static final ObjectMapper mapper = new ObjectMapper();
@@ -19,8 +27,8 @@ public class PatientHealthDataManager {
 public void saveHealthData(PatientHealthData healthData, User currentUser) throws SQLException {
 	// SQL Insert Query
 
-	String insertQuery = "INSERT INTO HealthData (USER_ID, DATA_DATE, BLOOD_PRESSURE, SUGAR_LEVEL, HEART_RATE, OXYGEN_LEVEL, COMMENTS) " +
-			"VALUES (?, ?, ?, ?, ?, ?, ?)";
+	String insertQuery = "INSERT INTO HealthData (USER_ID, DATA_DATE, BLOOD_PRESSURE, SUGAR_LEVEL, HEART_RATE, OXYGEN_LEVEL, COMMENTS, CREATIONDATETIME) " +
+			"VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	// Establish database connection
 	try (Connection connection = DBConnect.getConnection();
@@ -37,6 +45,7 @@ public void saveHealthData(PatientHealthData healthData, User currentUser) throw
 		preparedStatement.setInt(6, healthData.getOxygenLevel());
 
 		preparedStatement.setString(7, healthData.getComment());
+		preparedStatement.setTimestamp(8, java.sql.Timestamp.valueOf(healthData.getCreationDateTime()));
 
 		// Execute the insert statement
 		int rowsInserted = preparedStatement.executeUpdate();
@@ -122,4 +131,33 @@ public void saveHealthData(PatientHealthData healthData, User currentUser) throw
 
 		saveHealthData(newHealthData, currentUser );
 	}
+
+	public ObservableList<Patient> getHealthDataInRange(LocalDate fromDate, LocalDate toDate) throws SQLException {
+	ObservableList<Patient> healthDataList = FXCollections.observableArrayList();
+		String query = "SELECT * FROM HealthData WHERE DATA_DATE BETWEEN ? AND ?";
+		try (Connection connection = dbConnect.getConnection();
+			 PreparedStatement statement = connection.prepareStatement(query)) {
+
+			statement.setDate(1, java.sql.Date.valueOf(fromDate));
+			statement.setDate(2, java.sql.Date.valueOf(toDate));
+
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				// Create PatientHealthData objects from the result set
+				Patient healthData = new Patient(
+						resultSet.getDate("DATA_DATE").toLocalDate(),
+						resultSet.getString("blood_pressure"),
+						resultSet.getString("sugar_level"),
+						resultSet.getInt("heart_rate"),
+						resultSet.getInt("oxygen_level"),
+						resultSet.getString("comments"),
+						resultSet.getTimestamp("CREATIONDATETIME").toLocalDateTime()
+				);
+				healthDataList.add(healthData);
+			}
+		}
+
+		return healthDataList;
+	}
+
 }

@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class AddHealthDataController {
 
@@ -50,32 +51,34 @@ public class AddHealthDataController {
 		datePicker.setValue(LocalDate.now());
 	}
 
+	@FXML
 	public void saveHealthData(ActionEvent actionEvent) throws IOException, SQLException {
 		if (validateInputs()) {
-
 			User currentUser = UserSession.getInstance().getCurrentUser();
-			// If all inputs are valid, proceed with saving data
+
+			// Retrieve date (mandatory field)
 			LocalDate date = datePicker.getValue();
-			String bp = bloodPressureField.getText();
-			String sugar = sugarLevelField.getText();
-			String heartrate = heartRateField.getText();
-			int heart = Integer.parseInt(heartrate) ;
-			String oxygen = oxygenLevelField.getText();
-			int oxygenLevel = Integer.parseInt(oxygen);
-			String comment = commentsArea.getText();
 
+			// Retrieve optional fields, using null if blank
+			String bp = bloodPressureField.getText().isEmpty() ? null : bloodPressureField.getText();
+			String sugar = sugarLevelField.getText().isEmpty() ? null : sugarLevelField.getText();
+			Integer heart = heartRateField.getText().isEmpty() ? 0 : Integer.parseInt(heartRateField.getText());
+			Integer oxygenLevel = oxygenLevelField.getText().isEmpty() ? 0 : Integer.parseInt(oxygenLevelField.getText());
+			String comment = commentsArea.getText().isEmpty() ? null : commentsArea.getText();
 
-			if (null!= currentUser){
-				PatientHealthData healthData = new PatientHealthData(date, bp, sugar, heart, oxygenLevel, comment);
-				PatientHealthDataManager Manager = new PatientHealthDataManager();
-				Manager.addHealthData(healthData, currentUser);
+			LocalDateTime creationDateTime = LocalDateTime.now();
+
+			if (currentUser != null) {
+				PatientHealthData healthData = new PatientHealthData(date, bp, sugar, heart, oxygenLevel, comment, creationDateTime);
+				PatientHealthDataManager manager = new PatientHealthDataManager();
+				manager.addHealthData(healthData, currentUser);
 			}
-
 
 			showAlert(AlertType.INFORMATION, "Success", "Data saved successfully!");
 			clearForm();
 		}
 	}
+
 
 	public void cancelHealthData(ActionEvent actionEvent) throws IOException {
 		Stage stage = (Stage) btnCancelHealthData.getScene().getWindow();
@@ -97,32 +100,25 @@ public class AddHealthDataController {
 			datePicker.requestFocus();
 		}
 
-		// Validate Blood Pressure (format: systolic/diastolic, e.g., 120/80)
-		if (!isValidBloodPressure(bloodPressureField.getText())) {
+		// Validation for optional fields should only occur if the fields are not empty
+		if (!bloodPressureField.getText().isEmpty() && !isValidBloodPressure(bloodPressureField.getText())) {
 			errorMessage.append("Blood Pressure must be in the format systolic/diastolic (e.g., 120/80) and within realistic ranges.\n");
 			isValid = false;
-			bloodPressureField.requestFocus();
 		}
 
-		// Validate Sugar Level
-		if (!isValidSugarLevel(sugarLevelField.getText())) {
+		if (!sugarLevelField.getText().isEmpty() && !isValidSugarLevel(sugarLevelField.getText())) {
 			errorMessage.append("Sugar Level must be a number between 70 and 200 mg/dL.\n");
 			isValid = false;
-			sugarLevelField.requestFocus();
 		}
 
-		// Validate Heart Rate
-		if (!isValidHeartRate(heartRateField.getText())) {
+		if (!heartRateField.getText().isEmpty() && !isValidHeartRate(heartRateField.getText())) {
 			errorMessage.append("Heart Rate must be a number between 40 and 180 bpm.\n");
 			isValid = false;
-			heartRateField.requestFocus();
 		}
 
-		// Validate Oxygen Level
-		if (!isValidOxygenLevel(oxygenLevelField.getText())) {
+		if (!oxygenLevelField.getText().isEmpty() && !isValidOxygenLevel(oxygenLevelField.getText())) {
 			errorMessage.append("Oxygen Level must be a percentage between 80 and 100%.\n");
 			isValid = false;
-			oxygenLevelField.requestFocus();
 		}
 
 		// Show error messages if any validation failed
@@ -132,6 +128,7 @@ public class AddHealthDataController {
 
 		return isValid;
 	}
+
 
 	private boolean isValidBloodPressure(String bloodPressure) {
 		String regex = "^\\d{2,3}/\\d{2,3}$";

@@ -2,23 +2,29 @@ package com.zodiac.homehealthdevicedatalogger.Models;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Patient {
+
+
     private LocalDate date;
     private String bloodPressure;
     private String sugarLevel;
     private int heartRate;
     private int oxygenLevel;
     private String comments;
+    private String userId;
+    private LocalDateTime creationDateTime;
 
     // Constructor
-    public Patient(LocalDate date, String bloodPressure, String sugarLevel, int heartRate, int oxygenLevel, String comments) {
+    public Patient(LocalDate date, String bloodPressure, String sugarLevel, int heartRate, int oxygenLevel, String comments, LocalDateTime creationDateTime) {
         this.date = date;
         this.bloodPressure = bloodPressure;
         this.sugarLevel = sugarLevel;
         this.heartRate = heartRate;
         this.oxygenLevel = oxygenLevel;
         this.comments = comments;
+        this.creationDateTime = creationDateTime;
     }
 
     public Patient(LocalDate date, String bloodPressure, String sugarLevel, int heartRate, int oxygenLevel) {
@@ -32,6 +38,22 @@ public class Patient {
 
 
     // Getters and Setters
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
+    }
+
+
+    public String getUserId() {
+        return userId;
+    }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
     public LocalDate getDate() {
         return date;
     }

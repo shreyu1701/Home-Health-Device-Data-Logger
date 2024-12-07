@@ -1,60 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zodiac.homehealthdevicedatalogger.Controllers.TechnicianDashboardController">
+<VBox prefHeight="600.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zodiac.homehealthdevicedatalogger.Controllers.TechnicianDashboardController">
     <children>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <SplitPane dividerPositions="0.2774294670846395" layoutY="-1.0" prefHeight="400.0" prefWidth="640.0">
+                <SplitPane dividerPositions="0.2774294670846395" layoutY="-1.0" prefHeight="600.0" prefWidth="1000.0">
                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="244.0">
                             <children>
-<!--                                Avatar-->
-                                <Label layoutX="9.0" layoutY="142.0" prefHeight="18.0" prefWidth="50.0" text="Name :" />
-                                <Label fx:id="lblFullName" layoutX="56.0" layoutY="142.0" prefHeight="18.0" prefWidth="125.0" text="Shreyansh Koladiya" />
-                                <Label layoutX="11.0" layoutY="166.0" text="Age :" />
-                                <Label fx:id="lblAge" layoutX="55.0" layoutY="167.0" prefHeight="18.0" prefWidth="125.0" text="22" />
-                                <Label layoutX="9.0" layoutY="191.0" text="Gender :" />
-                                <Label fx:id="lblGender" layoutX="68.0" layoutY="191.0" prefHeight="18.0" prefWidth="101.0" text="Male" />
-                                <Label layoutX="10.0" layoutY="217.0" prefHeight="18.0" prefWidth="91.0" text="Blood Group :" />
-                                <Button fx:id="btnTechnicianLogout" layoutX="62.0" layoutY="340.0" mnemonicParsing="false" onAction="#handleTechnicianLogout" style="-fx-background-color: blue;" text="Logout" textFill="WHITE" />
-                                <Label fx:id="lblBloodGroup" layoutX="99.0" layoutY="219.0" prefHeight="18.0" prefWidth="80.0" text="AB+" />
-                                <Separator layoutX="4.0" layoutY="134.0" prefHeight="3.0" prefWidth="180.0" />
-                                <Label layoutX="53.0" layoutY="16.0" text="Technician" />
-                        <ImageView fitHeight="70.0" fitWidth="101.0" layoutX="35.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../../resources/image" />
-                           </image>
-                        </ImageView>
+                                <Label fx:id="lblFullName" layoutX="104.0" layoutY="89.0" prefHeight="18.0" prefWidth="156.0" text="Shreyansh Koladiya">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblAge" layoutX="105.0" layoutY="132.0" prefHeight="18.0" prefWidth="125.0" text="22">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblGender" layoutX="103.0" layoutY="175.0" prefHeight="18.0" prefWidth="101.0" text="Male">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Button fx:id="btnTechnicianLogout" layoutX="72.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleTechnicianLogout" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: blue;" text="Logout" textFill="WHITE">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Button>
+                                <Label fx:id="lblBloodGroup" layoutX="102.0" layoutY="214.0" prefHeight="18.0" prefWidth="80.0" text="AB+">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Separator layoutX="-1.0" layoutY="66.0" prefHeight="3.0" prefWidth="274.0" />
+                                <Label layoutX="53.0" layoutY="16.0" />
+                                <Label layoutX="35.0" layoutY="11.0" text="Technician">
+                                    <font>
+                                        <Font name="Bookman Old Style" size="37.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="9.0" layoutY="89.0" prefHeight="18.0" prefWidth="50.0" text="Name :">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="9.0" layoutY="132.0" text="Age :">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="6.0" layoutY="175.0" text="Gender :">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="5.0" layoutY="213.0" prefHeight="21.0" prefWidth="97.0" text="Blood Group :">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
                             </children>
                         </AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                             <children>
-                                <TabPane layoutX="-5.0" prefHeight="400.0" prefWidth="465.0" tabClosingPolicy="UNAVAILABLE">
+                                <TabPane layoutX="-5.0" prefHeight="598.0" prefWidth="725.0" tabClosingPolicy="UNAVAILABLE">
                                     <tabs>
                                         <Tab text="Dashboard">
                                             <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                     <children>
-                                                        <TreeTableView layoutX="8.0" layoutY="41.0" prefHeight="295.0" prefWidth="441.0">
+
+
+                                                        <TableView fx:id="healthRecordsTable1" layoutX="10.0" layoutY="49.0" prefHeight="520.0" prefWidth="709.0">
                                                             <columns>
-                                                                <TreeTableColumn prefWidth="38.0" text="Date" />
-                                                                <TreeTableColumn prefWidth="45.0" text="Name" />
-                                                                <TreeTableColumn prefWidth="87.0" text="Blood Pressure" />
-                                                                <TreeTableColumn prefWidth="48.0" text="Sugar" />
-                                                                <TreeTableColumn prefWidth="70.0" text="Heart Rate" />
-                                                                <TreeTableColumn prefWidth="88.0" text="Oxygen Level" />
-                                                                <TreeTableColumn prefWidth="61.0" text="Action" />
+                                                                <TableColumn fx:id="columnDate1" prefWidth="70.0" text="Date" />
+                                                                <TableColumn fx:id="columnUser1" prefWidth="147.0" text="User ID" />
+                                                                <TableColumn fx:id="columnBloodPressure1" prefWidth="91.0" text="Blood Pressure" />
+                                                                <TableColumn fx:id="columnSugar1" prefWidth="76.0" text="Sugar Level" />
+                                                                <TableColumn fx:id="columnHeartRate1" prefWidth="68.0" text="Heart Rate" />
+                                                                <TableColumn fx:id="columnOxygen1" prefWidth="84.0" text="Oxygen Level" />
+                                                                <!--                                                                <TableColumn fx:id="updateColumn" prefWidth="70.0" text="Update" />-->
+                                                                <!--                                                                <TableColumn fx:id="columnDelete" prefWidth="66.0" text="Action" />-->
+                                                                <TableColumn fx:id="actionButtons1" prefWidth="164.0" text="Actions">
+                                                                    <cellValueFactory>
+                                                                        <PropertyValueFactory property="actionButtons" />
+                                                                    </cellValueFactory>
+                                                                </TableColumn>
                                                             </columns>
-                                                        </TreeTableView>
-<!--                                          <Button layoutX="371.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddPatient" style="-fx-background-color: blue; -fx-text-fill: white;" text="Add Patient" />-->
-                                                        <Button fx:id="btnAddPatient" layoutX="371.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddPatient" style="-fx-background-color: blue; -fx-text-fill: white;" text="Add Patient"/>
+                                                        </TableView>
+                                                        <Button fx:id="btnRefresh" layoutX="414.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleRefresh" prefHeight="39.0" prefWidth="95.0" style="-fx-background-color: blue;" text="Refresh" textFill="WHITE">
+                                                            <font>
+                                                                <Font size="15.0" />
+                                                            </font></Button>
+
+                                                        <!--                                                        <TreeTableView layoutX="8.0" layoutY="41.0" prefHeight="295.0" prefWidth="441.0">-->
+                                                        <!--                                                            <columns>-->
+                                                        <!--                                                                <TreeTableColumn prefWidth="38.0" text="Date" />-->
+                                                        <!--                                                                <TreeTableColumn prefWidth="45.0" text="Name" />-->
+                                                        <!--                                                                <TreeTableColumn prefWidth="87.0" text="Blood Pressure" />-->
+                                                        <!--                                                                <TreeTableColumn prefWidth="48.0" text="Sugar" />-->
+                                                        <!--                                                                <TreeTableColumn prefWidth="70.0" text="Heart Rate" />-->
+                                                        <!--                                                                <TreeTableColumn prefWidth="88.0" text="Oxygen Level" />-->
+                                                        <!--&lt;!&ndash;                                                                <TreeTableColumn prefWidth="61.0" text="Action" />&ndash;&gt;-->
+
+                                                        <!--                                                            </columns>-->
+                                                        <!--                                                        </TreeTableView>-->
+                                                        <!--                                          <Button layoutX="371.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleAddPatient" style="-fx-background-color: blue; -fx-text-fill: white;" text="Add Patient" />-->
+                                                        <Button fx:id="btnAddPatient" layoutX="14.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleAddPatient" prefHeight="39.0" prefWidth="107.0" style="-fx-background-color: blue; -fx-text-fill: white;" text="Add Patient">
+                                                            <font>
+                                                                <Font size="15.0" />
+                                                            </font>
+                                                        </Button>
+                                                        <Button fx:id="btnAddPatientHealthData" layoutX="522.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleAddPatientHealthData" prefHeight="39.0" prefWidth="189.0" style="-fx-background-color: blue; -fx-text-fill: white;" text="Add Patient Health Data">
+                                                            <font>
+                                                                <Font size="15.0" />
+                                                            </font>
+                                                        </Button>
                                                     </children>
                                                 </AnchorPane>
                                             </content>
@@ -63,35 +148,43 @@
                                             <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="306.0" prefWidth="378.0">
                                                     <children>
-                                                        <DatePicker layoutX="260.0" layoutY="7.0" />
-                                                        <Separator layoutY="38.0" prefHeight="9.0" prefWidth="459.0" />
-                                                        <TextField layoutX="19.0" layoutY="7.0" prefHeight="26.0" prefWidth="101.0" text="Search #Name" />
-                                                        <TextField layoutX="143.0" layoutY="7.0" prefHeight="26.0" prefWidth="80.0" text="Search #ID" />
+<!--                                                        <Separator layoutY="38.0" prefHeight="3.0" prefWidth="675.0" />-->
+<!--                                                        <TextField layoutX="14.0" layoutY="7.0" prefHeight="26.0" prefWidth="181.0" promptText="Search #ID" />-->
+                                                        <!-- Separator -->
+                                                        <Separator layoutY="38.0" prefHeight="3.0" prefWidth="675.0" />
 
+                                                        <!-- Search Field -->
+                                                        <TextField fx:id="searchField" layoutX="14.0" layoutY="7.0" prefHeight="26.0" prefWidth="181.0" promptText="Search #ID" />
 
-                                                        <TableView fx:id="healthRecordsTable" layoutX="14.0" layoutY="47.0" prefHeight="300.0" prefWidth="600.0">
+                                                        <!-- Date Pickers -->
+                                                        <Label layoutX="255.0" layoutY="11.0" text="From :" />
+                                                        <DatePicker fx:id="fromDatePicker" layoutX="300.0" layoutY="8.0" />
+
+                                                        <Label layoutX="503.0" layoutY="10.0" text="To :" />
+                                                        <DatePicker fx:id="toDatePicker" layoutX="537.0" layoutY="7.0" />
+
+                                                        <TableView fx:id="healthRecordsTable" layoutX="7.0" layoutY="45.0" prefHeight="523.0" prefWidth="708.0">
                                                             <columns>
-                                                                <TableColumn fx:id="columnDate" prefWidth="100.0" text="Date" />
-                                                                <TableColumn fx:id="columnUser" prefWidth="100.0" text="User ID" />
-                                                                <TableColumn fx:id="columnBloodPressure" prefWidth="120.0" text="Blood Pressure" />
-                                                                <TableColumn fx:id="columnSugar" prefWidth="100.0" text="Sugar Level" />
-                                                                <TableColumn fx:id="columnHeartRate" prefWidth="100.0" text="Heart Rate" />
-                                                                <TableColumn fx:id="columnOxygen" prefWidth="100.0" text="Oxygen Level" />
-<!--                                                                <TableColumn fx:id="updateColumn" prefWidth="70.0" text="Update" />-->
-                                                                <TableColumn fx:id="columnDelete" prefWidth="66.0" text="Action" />
+                                                                <TableColumn fx:id="columnDate" prefWidth="71.0" text="Date" />
+                                                                <TableColumn fx:id="columnUser" prefWidth="141.0" text="User ID" />
+                                                                <TableColumn fx:id="columnBloodPressure" prefWidth="90.0" text="Blood Pressure" />
+                                                                <TableColumn fx:id="columnSugar" prefWidth="75.0" text="Sugar Level" />
+                                                                <TableColumn fx:id="columnHeartRate" prefWidth="67.0" text="Heart Rate" />
+                                                                <TableColumn fx:id="columnOxygen" prefWidth="86.0" text="Oxygen Level" />
+                                                                <!--                                                                <TableColumn fx:id="updateColumn" prefWidth="70.0" text="Update" />-->
+                                                                <!--                                                                <TableColumn fx:id="columnDelete" prefWidth="66.0" text="Action" />-->
+                                                                <TableColumn fx:id="actionButtons" prefWidth="170.0" text="Actions">
+                                                                    <cellValueFactory>
+                                                                        <PropertyValueFactory property="actionButtons" />
+                                                                    </cellValueFactory>
+                                                                </TableColumn>
                                                             </columns>
                                                         </TableView>
-<!--                                                        <TreeTableView layoutX="9.0" layoutY="44.0" prefHeight="297.0" prefWidth="446.0">-->
-<!--                                                            <columns>-->
-<!--                                                                <TreeTableColumn prefWidth="38.0" text="Date" />-->
-<!--                                                                <TreeTableColumn prefWidth="45.0" text="Name" />-->
-<!--                                                                <TreeTableColumn prefWidth="87.0" text="Blood Pressure" />-->
-<!--                                                                <TreeTableColumn prefWidth="48.0" text="Sugar" />-->
-<!--                                                                <TreeTableColumn prefWidth="70.0" text="Heart Rate" />-->
-<!--                                                                <TreeTableColumn prefWidth="88.0" text="Oxygen Level" />-->
-<!--                                                                <TreeTableColumn prefWidth="61.0" text="Action" />-->
-<!--                                                            </columns>-->
-<!--                                                        </TreeTableView>-->
+<!--                                                        <DatePicker layoutX="251.0" layoutY="8.0" />-->
+<!--                                                        <DatePicker layoutX="488.0" layoutY="7.0" />-->
+<!--                                                        <Label layoutX="206.0" layoutY="11.0" text="From :" />-->
+<!--                                                        <Label layoutX="454.0" layoutY="10.0" text="To :" />-->
+
                                                     </children>
                                                 </AnchorPane>
                                             </content>
@@ -100,77 +193,73 @@
                                             <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="342.0" prefWidth="475.0">
                                                     <children>
-                                                        <DatePicker layoutX="263.0" layoutY="7.0" />
-                                                        <TextField layoutX="21.0" layoutY="5.0" prefHeight="26.0" prefWidth="101.0" text="Search #Name" />
-                                                        <TextField layoutX="154.0" layoutY="6.0" prefHeight="26.0" prefWidth="80.0" text="Search #ID" />
-                                                        <Separator layoutY="38.0" prefHeight="9.0" prefWidth="459.0" />
-                                                        <SplitPane dividerPositions="0.7162162162162162" layoutX="7.0" layoutY="44.0" prefHeight="297.0" prefWidth="446.0">
+                                                        <Separator layoutY="38.0" prefHeight="3.0" prefWidth="681.0" />
+                                                        <SplitPane dividerPositions="0.7162162162162162" layoutX="7.0" layoutY="44.0" prefHeight="526.0" prefWidth="718.0">
                                                             <items>
                                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                                                     <children>
-                                                                        <TabPane prefHeight="297.0" prefWidth="316.0" tabClosingPolicy="UNAVAILABLE">
+                                                                        <TabPane prefHeight="526.0" prefWidth="480.0" tabClosingPolicy="UNAVAILABLE">
                                                                             <tabs>
                                                                                 <Tab text="Blood Pressure">
                                                                                     <content>
-                                                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                                                                            <children>
-                                                                                                <AreaChart layoutX="22.0" layoutY="13.0" prefHeight="116.0" prefWidth="171.0">
-                                                                                                    <xAxis>
-                                                                                                        <CategoryAxis side="BOTTOM" />
-                                                                                                    </xAxis>
-                                                                                                    <yAxis>
-                                                                                                        <NumberAxis side="LEFT" />
-                                                                                                    </yAxis>
-                                                                                                </AreaChart>
-                                                                                            </children>
+                                                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="370.0" prefWidth="382.0">
+                                                                     <children>
+                                                                        <AreaChart layoutX="106.0" layoutY="144.0" prefHeight="210.0" prefWidth="268.0">
+                                                                           <xAxis>
+                                                                              <CategoryAxis side="BOTTOM" />
+                                                                           </xAxis>
+                                                                           <yAxis>
+                                                                              <NumberAxis side="LEFT" />
+                                                                           </yAxis>
+                                                                        </AreaChart>
+                                                                     </children>
                                                                                         </AnchorPane>
                                                                                     </content>
                                                                                 </Tab>
                                                                                 <Tab text="Sugar Level">
                                                                                     <content>
                                                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                                                                            <children>
-                                                                                                <BarChart layoutX="22.0" layoutY="13.0" prefHeight="116.0" prefWidth="107.0">
-                                                                                                    <xAxis>
-                                                                                                        <CategoryAxis side="BOTTOM" />
-                                                                                                    </xAxis>
-                                                                                                    <yAxis>
-                                                                                                        <NumberAxis side="LEFT" />
-                                                                                                    </yAxis>
-                                                                                                </BarChart>
-                                                                                            </children>
-                                                                                        </AnchorPane>
+                                                                     <children>
+                                                                        <AreaChart layoutX="106.0" layoutY="144.0" prefHeight="210.0" prefWidth="268.0">
+                                                                           <xAxis>
+                                                                              <CategoryAxis side="BOTTOM" />
+                                                                           </xAxis>
+                                                                           <yAxis>
+                                                                              <NumberAxis side="LEFT" />
+                                                                           </yAxis>
+                                                                        </AreaChart>
+                                                                     </children></AnchorPane>
                                                                                     </content>
                                                                                 </Tab>
                                                                                 <Tab text="Heart Rate">
                                                                                     <content>
                                                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                                                                            <children>
-                                                                                                <BarChart layoutX="22.0" layoutY="13.0" prefHeight="147.0" prefWidth="163.0">
-                                                                                                    <xAxis>
-                                                                                                        <CategoryAxis side="BOTTOM" />
-                                                                                                    </xAxis>
-                                                                                                    <yAxis>
-                                                                                                        <NumberAxis side="LEFT" />
-                                                                                                    </yAxis>
-                                                                                                </BarChart>
-                                                                                            </children>
+                                                                     <children>
+                                                                        <AreaChart layoutX="106.0" layoutY="144.0" prefHeight="210.0" prefWidth="268.0">
+                                                                           <xAxis>
+                                                                              <CategoryAxis side="BOTTOM" />
+                                                                           </xAxis>
+                                                                           <yAxis>
+                                                                              <NumberAxis side="LEFT" />
+                                                                           </yAxis>
+                                                                        </AreaChart>
+                                                                     </children>
                                                                                         </AnchorPane>
                                                                                     </content>
                                                                                 </Tab>
                                                                                 <Tab text="Oxygen Level">
                                                                                     <content>
                                                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="239.0" prefWidth="384.0">
-                                                                                            <children>
-                                                                                                <LineChart layoutX="22.0" layoutY="13.0" prefHeight="105.0" prefWidth="153.0">
-                                                                                                    <xAxis>
-                                                                                                        <CategoryAxis side="BOTTOM" />
-                                                                                                    </xAxis>
-                                                                                                    <yAxis>
-                                                                                                        <NumberAxis side="LEFT" />
-                                                                                                    </yAxis>
-                                                                                                </LineChart>
-                                                                                            </children>
+                                                                     <children>
+                                                                        <AreaChart layoutX="106.0" layoutY="144.0" prefHeight="210.0" prefWidth="268.0">
+                                                                           <xAxis>
+                                                                              <CategoryAxis side="BOTTOM" />
+                                                                           </xAxis>
+                                                                           <yAxis>
+                                                                              <NumberAxis side="LEFT" />
+                                                                           </yAxis>
+                                                                        </AreaChart>
+                                                                     </children>
                                                                                         </AnchorPane>
                                                                                     </content>
                                                                                 </Tab>
@@ -178,23 +267,30 @@
                                                                         </TabPane>
                                                                     </children>
                                                                 </AnchorPane>
-                                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="524.0" prefWidth="222.0">
                                                                     <children>
-                                                                        <TitledPane animated="false" layoutX="-3.0" prefHeight="296.0" prefWidth="137.0" text="Generate Report">
+                                                                        <TitledPane animated="false" layoutX="-3.0" prefHeight="526.0" prefWidth="192.0" text="Generate Report">
                                                                             <content>
                                                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="269.0" prefWidth="141.0">
                                                                                     <children>
-                                                                                        <DatePicker layoutX="17.0" layoutY="34.0" prefHeight="26.0" prefWidth="91.0" />
-                                                                                        <DatePicker layoutX="18.0" layoutY="95.0" prefHeight="26.0" prefWidth="91.0" />
+                                                                                        <DatePicker layoutX="17.0" layoutY="34.0" prefHeight="26.0" prefWidth="156.0" />
+                                                                                        <DatePicker layoutX="18.0" layoutY="95.0" prefHeight="26.0" prefWidth="156.0" />
                                                                                         <Label layoutX="18.0" layoutY="10.0" text="From" />
                                                                                         <Label layoutX="20.0" layoutY="71.0" text="To" />
-                                                                                        <Group layoutX="13.0" layoutY="162.0">
-                                                                                            <children>
-                                                                                                <RadioButton layoutX="-3.0" layoutY="-22.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="107.0" text="Excel Sheet" textAlignment="CENTER" />
-                                                                                                <RadioButton layoutX="-3.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="121.0" text="PDF" textAlignment="CENTER" />
-                                                                                            </children>
-                                                                                        </Group>
-                                                                                        <Button layoutX="29.0" layoutY="213.0" mnemonicParsing="false" style="-fx-background-color: blue;" text="Download" textFill="WHITE" />
+                                                                                        <Group layoutX="13.0" layoutY="162.0" />
+                                                                                        <Button layoutX="45.0" layoutY="410.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="101.0" style="-fx-background-color: blue;" text="Download" textFill="WHITE">
+                                                                     <font>
+                                                                        <Font size="15.0" />
+                                                                     </font></Button>
+                                                                  <ChoiceBox fx:id="choiceDownload" layoutX="17.0" layoutY="210.0" prefHeight="25.0" prefWidth="155.0">
+                                                                     <items>
+                                                                        <FXCollections fx:factory="observableArrayList">
+                                                                           <String fx:value="Excel" />
+                                                                           <String fx:value="PDF" />
+                                                                        </FXCollections>
+                                                                     </items>
+                                                                  </ChoiceBox>
+                                                                  <Label layoutX="17.0" layoutY="180.0" text="Download As :" />
                                                                                     </children>
                                                                                 </AnchorPane>
                                                                             </content>
@@ -203,6 +299,11 @@
                                                                 </AnchorPane>
                                                             </items>
                                                         </SplitPane>
+                                          <TextField layoutX="17.0" layoutY="4.0" prefHeight="26.0" prefWidth="181.0" promptText="Search chart #ID" />
+                                          <DatePicker layoutX="313.0" layoutY="5.0" />
+                                          <DatePicker layoutX="537.0" layoutY="5.0" />
+                                          <Label layoutX="267.0" layoutY="8.0" text="From :" />
+                                          <Label layoutX="502.0" layoutY="9.0" text="To :" />
                                                     </children>
                                                 </AnchorPane>
                                             </content>
@@ -211,40 +312,167 @@
                                             <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="306.0" prefWidth="378.0">
                                                     <children>
-                                                        <TabPane layoutX="7.0" layoutY="2.0" prefHeight="336.0" prefWidth="452.0" tabClosingPolicy="UNAVAILABLE">
+                                                        <TabPane layoutX="7.0" layoutY="2.0" prefHeight="563.0" prefWidth="718.0" tabClosingPolicy="UNAVAILABLE">
                                                             <tabs>
                                                                 <Tab text="Profile">
                                                                     <content>
                                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                             <children>
-                                                                                <Label layoutX="17.0" layoutY="36.0" text="Name :" />
-                                                                                <Label layoutX="19.0" layoutY="111.0" text="Email :" />
-                                                                                <Label layoutX="20.0" layoutY="137.0" text="Date of Birth :" />
-                                                                                <Label layoutX="18.0" layoutY="61.0" text="Age :" />
-                                                                                <Label layoutX="16.0" layoutY="10.0" text="Employee ID :" />
-                                                                                <Label layoutX="18.0" layoutY="86.0" text="Gender :" />
-                                                                                <Label layoutX="20.0" layoutY="162.0" text="Phone Number :" />
-                                                                                <Text disable="true" layoutX="135.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T015" />
-                                                                                <Text disable="true" layoutX="135.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shreyansh Koladiya" />
-                                                                                <Text disable="true" layoutX="135.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="22" />
-                                                                                <Text disable="true" layoutX="135.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Male" />
-                                                                                <Text disable="true" layoutX="135.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="shreyanshkoladiyawork@gmail.com" />
-                                                                                <Text disable="true" layoutX="135.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="17/01/2002" />
-                                                                                <Text disable="true" layoutX="135.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+1 3658838766" />
+                                                                                <Label layoutX="55.0" layoutY="71.0" text="User ID:">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <TextField fx:id="userIdField" editable="false" layoutX="165.0" layoutY="71.0">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </TextField>
+
+                                                                                <Label layoutX="55.0" layoutY="110.0" text="First Name:">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <TextField fx:id="firstNameField" editable="false" layoutX="165.0" layoutY="110.0">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </TextField>
+
+                                                                                <Label layoutX="55.0" layoutY="148.0" text="Last Name:">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <TextField fx:id="lastNameField" editable="false" layoutX="165.0" layoutY="148.0">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </TextField>
+
+                                                                                <Label layoutX="55.0" layoutY="186.0" text="Age:">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <TextField fx:id="ageField" editable="false" layoutX="165.0" layoutY="186.0">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </TextField>
+
+                                                                                <Label layoutX="55.0" layoutY="225.0" text="Phone Number:">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <TextField fx:id="phoneField" editable="false" layoutX="165.0" layoutY="225.0">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </TextField>
+
+                                                                                <Label layoutX="55.0" layoutY="265.0" text="Gender:">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <TextField fx:id="genderField" editable="false" layoutX="165.0" layoutY="265.0">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </TextField>
+
+                                                                                <Label layoutX="55.0" layoutY="310.0" text="Email:">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <TextField fx:id="emailField" editable="false" layoutX="165.0" layoutY="310.0">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </TextField>
+
+                                                                                <Label layoutX="55.0" layoutY="350.0" text="Role:">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <TextField fx:id="roleField" editable="false" layoutX="165.0" layoutY="350.0">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </TextField>
+
+                                                                                <Label layoutX="55.0" layoutY="390.0" text="Blood Group:">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <TextField fx:id="bloodGroupField" editable="false" layoutX="165.0" layoutY="390.0">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </TextField>
+
+                                                                                <Button layoutX="237.0" layoutY="461.0" mnemonicParsing="false" onAction="#onEditButtonClick" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: blue;" text="Edit" textFill="WHITE">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Button>
+                                                                                <Button layoutX="370.0" layoutY="462.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: blue;" text="Save" textFill="WHITE">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Button>
                                                                             </children>
                                                                         </AnchorPane>
                                                                     </content>
                                                                 </Tab>
+
                                                                 <Tab text="Patient Management">
                                                                     <content>
-                                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                            <children>
+                                                                                <TableView fx:id="patientTableView" layoutX="5.0" layoutY="7.0" prefHeight="526.0" prefWidth="709.0">
+                                                                                    <columns>
+                                                                                        <TableColumn fx:id="firstNameColumn" prefWidth="69.0" text="First Name" />
+                                                                                        <TableColumn fx:id="lastNameColumn" prefWidth="71.0" text="Last Name" />
+                                                                                        <TableColumn fx:id="ageColumn" prefWidth="39.0" text="Age" />
+                                                                                        <TableColumn fx:id="phoneColumn" prefWidth="90.0" text="Phone Number" />
+                                                                                        <TableColumn fx:id="genderColumn" prefWidth="46.0" text="Gender" />
+                                                                                        <TableColumn fx:id="emailColumn" prefWidth="158.0" text="E - Mail" />
+                                                                                        <TableColumn fx:id="bloodGroupColumn" prefWidth="76.0" text="Blood Group" />
+                                                                                        <TableColumn fx:id="actionsColumn" prefWidth="159.0" text="Actions" />
+                                                                                    </columns>
+                                                                                </TableView>
+                                                                            </children>
+                                                                        </AnchorPane>
                                                                     </content>
                                                                 </Tab>
-                                                                <Tab text="Notification">
-                                                                    <content>
-                                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                                                    </content>
-                                                                </Tab>
+
+
+                                                                <!--                                                                <Tab text="Patient Management">-->
+<!--                                                                    <content>-->
+<!--                                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">-->
+<!--                                                         <children>-->
+<!--                                                            <TableView layoutX="6.0" layoutY="7.0" prefHeight="526.0" prefWidth="662.0">-->
+<!--                                                              <columns>-->
+<!--                                                                <TableColumn prefWidth="75.0" text="First Name" />-->
+<!--                                                                  <TableColumn prefWidth="75.0" text="Last Name" />-->
+<!--                                                                  <TableColumn prefWidth="39.0" text="Age" />-->
+<!--                                                                  <TableColumn prefWidth="94.0" text="Phone Number" />-->
+<!--                                                                  <TableColumn prefWidth="49.0" text="Gender" />-->
+<!--                                                                  <TableColumn prefWidth="137.0" text="E - Mail" />-->
+<!--                                                                  <TableColumn prefWidth="81.0" text="Blood Group" />-->
+<!--                                                                  <TableColumn prefWidth="111.0" text="Actions" />-->
+<!--                                                              </columns>-->
+<!--                                                            </TableView>-->
+<!--                                                         </children></AnchorPane>-->
+<!--                                                                    </content>-->
+<!--                                                                </Tab>-->
                                                             </tabs>
                                                         </TabPane>
                                                     </children>

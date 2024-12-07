@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zodiac.homehealthdevicedatalogger.Controllers.TechnicianAddHealthDataController">
+    <children>
+
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="640.0">
+            <children>
+                <!-- Title Label -->
+                <Label layoutX="240.0" layoutY="14.0" text="Add Patient's Health Data">
+                    <font>
+                        <Font size="22.0" />
+                    </font>
+                </Label>
+
+                <!-- Date Picker -->
+                <Label layoutX="367.0" layoutY="55.0" style="-fx-font-size: 14px;" text="Date:" />
+                <DatePicker fx:id="datePicker" layoutX="420.0" layoutY="53.0" />
+
+                <!-- Input Fields for Health Data -->
+                <!-- Blood Pressure -->
+                <Label layoutX="40.0" layoutY="100.0" style="-fx-font-size: 14px;" text="Blood Pressure:" />
+                <TextField fx:id="bloodPressureField" layoutX="150.0" layoutY="99.0" promptText="Optional (e.g., 120/80)" />
+
+                <!-- Sugar Level -->
+                <Label layoutX="40.0" layoutY="140.0" style="-fx-font-size: 14px;" text="Sugar Level:" />
+                <TextField fx:id="sugarLevelField" layoutX="150.0" layoutY="139.0" promptText="Optional (e.g., 90 mg/dL)" />
+
+                <!-- Heart Rate -->
+                <Label layoutX="40.0" layoutY="180.0" style="-fx-font-size: 14px;" text="Heart Rate:" />
+                <TextField fx:id="heartRateField" layoutX="150.0" layoutY="179.0" promptText="Optional (e.g., 72 bpm)" />
+
+                <!-- Oxygen Level -->
+                <Label layoutX="40.0" layoutY="220.0" style="-fx-font-size: 14px;" text="Oxygen Level:" />
+                <TextField fx:id="oxygenLevelField" layoutX="150.0" layoutY="219.0" promptText="Optional (e.g., 98%)" />
+
+                <!-- Comment Box -->
+                <Label layoutX="40.0" layoutY="260.0" style="-fx-font-size: 14px;" text="Comments:" />
+                <TextArea fx:id="commentsArea" layoutX="150.0" layoutY="255.0" prefHeight="60.0" prefWidth="300.0" promptText="Optional notes here" />
+
+                <!-- Save Button -->
+                <Button fx:id="saveTechAddHealthData" layoutX="211.0" layoutY="344.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="86.0" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Save" onAction="#saveData" />
+                <Button fx:id="cancelHealthData" layoutX="324.0" layoutY="343.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="86.0" style="-fx-font-size: 14px; -fx-background-color: #f44336; -fx-text-fill: white;" text="Cancel" onAction="#cancelAction" />
+
+                <!-- User ID Field -->
+                <Label layoutX="40.0" layoutY="55.0" style="-fx-font-size: 14px;" text="User ID:" />
+                <TextField fx:id="userIdField" layoutX="150.0" layoutY="53.0" promptText="Mandatory" />
+            </children>
+        </AnchorPane>
+
+    </children>
+</VBox>
