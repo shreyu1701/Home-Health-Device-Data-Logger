@@ -1,7 +1,9 @@
 package com.zodiac.homehealthdevicedatalogger.Data;
 
+import com.zodiac.homehealthdevicedatalogger.Models.HealthData;
 import com.zodiac.homehealthdevicedatalogger.Models.Patient;
 import com.zodiac.homehealthdevicedatalogger.Models.User;
+import com.zodiac.homehealthdevicedatalogger.Data.DBConnect;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -14,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PatientHealthDataManager {
-
-	DBConnect dbConnect = new DBConnect();
 
 //	private static final String FILE_PATH = "PatientHealthData.json";
 //	private static final ObjectMapper mapper = new ObjectMapper();
@@ -135,7 +135,7 @@ public void saveHealthData(PatientHealthData healthData, User currentUser) throw
 	public ObservableList<Patient> getHealthDataInRange(LocalDate fromDate, LocalDate toDate) throws SQLException {
 	ObservableList<Patient> healthDataList = FXCollections.observableArrayList();
 		String query = "SELECT * FROM HealthData WHERE DATA_DATE BETWEEN ? AND ?";
-		try (Connection connection = dbConnect.getConnection();
+		try (Connection connection = DBConnect.getConnection();
 			 PreparedStatement statement = connection.prepareStatement(query)) {
 
 			statement.setDate(1, java.sql.Date.valueOf(fromDate));
@@ -159,5 +159,36 @@ public void saveHealthData(PatientHealthData healthData, User currentUser) throw
 
 		return healthDataList;
 	}
+
+	public static List<PatientHealthData> getHealthDataInRangeReport(LocalDate fromDate, LocalDate toDate) throws SQLException {
+		List<PatientHealthData> healthDataList = new ArrayList<>();
+
+		String query = "SELECT * FROM HEALTHDATA WHERE Data_Date BETWEEN ? AND ?";
+		try (Connection connection = DBConnect.getConnection();
+			 PreparedStatement statement = connection.prepareStatement(query)) {
+
+			statement.setDate(1, java.sql.Date.valueOf(fromDate));
+			statement.setDate(2, java.sql.Date.valueOf(toDate));
+
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				// Create PatientHealthData objects from the result set
+				PatientHealthData healthData = new PatientHealthData(
+						resultSet.getDate("Data_Date").toLocalDate(),
+						resultSet.getString("blood_pressure"),
+						resultSet.getString("sugar_level"),
+						resultSet.getInt("heart_rate"),
+						resultSet.getInt("oxygen_level"),
+						resultSet.getString("comments"),
+						resultSet.getTimestamp("creationdatetime").toLocalDateTime()
+				);
+				healthDataList.add(healthData);
+			}
+		}
+
+		return healthDataList;
+	}
+
+
 
 }

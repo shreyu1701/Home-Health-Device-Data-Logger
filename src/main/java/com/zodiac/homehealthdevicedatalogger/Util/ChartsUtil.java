@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ChartsUtil {
@@ -65,11 +67,11 @@ public class ChartsUtil {
             Integer diastolic = reading.getDiastolic();
 
             if (systolic == null || diastolic == null) {
-                System.out.println("Skipping data point for date: " + reading.getDateTime() + " because of null value(s).");
+//                System.out.println("Skipping data point for date: " + reading.getDateTime() + " because of null value(s).");
                 continue;
             }
             String formattedDate = reading.getDateTime().format(formatter);
-            System.out.println("Adding data point: " + formattedDate + " - Systolic: " + reading.getSystolic() + ", Diastolic: " + reading.getDiastolic());
+//            System.out.println("Adding data point: " + formattedDate + " - Systolic: " + reading.getSystolic() + ", Diastolic: " + reading.getDiastolic());
 
             systolicSeries.getData().add(new XYChart.Data<>(formattedDate, reading.getSystolic()));
             diastolicSeries.getData().add(new XYChart.Data<>(formattedDate, reading.getDiastolic()));
@@ -119,11 +121,11 @@ public class ChartsUtil {
         for (SugarLevelData reading : data) {
 
             if (reading.getSugarLevel() == 0) {
-                System.out.println("Skipping data point for date: " + reading.getDateTime() + " because sugar level is 0.");
+//                System.out.println("Skipping data point for date: " + reading.getDateTime() + " because sugar level is 0.");
                 continue; // Skip this record
             }
             String formattedDate = reading.getDateTime().format(formatter);
-            System.out.println("Adding data point: " + formattedDate + ", Sugar Level: " + reading.getSugarLevel());
+//            System.out.println("Adding data point: " + formattedDate + ", Sugar Level: " + reading.getSugarLevel());
             sugarSeries.getData().add(new XYChart.Data<>(formattedDate, reading.getSugarLevel()));
         }
 
@@ -163,12 +165,12 @@ public class ChartsUtil {
 
         for (HeartRateData reading : data) {
             if (reading.getHeartRate() == 0) {
-                System.out.println("Skipping data point for date: " + reading.getDateTime() + " because heart rate is 0.");
+//                System.out.println("Skipping data point for date: " + reading.getDateTime() + " because heart rate is 0.");
                 continue; // Skip this record
             }
 
             String formattedDate = reading.getDateTime().format(formatter);
-            System.out.println("Adding data point: " + formattedDate + ", Heart Rate: " + reading.getHeartRate());
+//            System.out.println("Adding data point: " + formattedDate + ", Heart Rate: " + reading.getHeartRate());
             heartRateSeries.getData().add(new XYChart.Data<>(formattedDate, reading.getHeartRate()));
         }
 
@@ -208,12 +210,12 @@ public class ChartsUtil {
 
         for (OxygenLevelData reading : data) {
             if (reading.getOxygenLevel() == 0) {
-                System.out.println("Skipping data point for date: " + reading.getDateTime() + " because oxygen level is 0.");
+//                System.out.println("Skipping data point for date: " + reading.getDateTime() + " because oxygen level is 0.");
                 continue; // Skip this record
             }
 
             String formattedDate = reading.getDateTime().format(formatter);
-            System.out.println("Adding data point: " + formattedDate + ", Oxygen Level: " + reading.getOxygenLevel());
+//            System.out.println("Adding data point: " + formattedDate + ", Oxygen Level: " + reading.getOxygenLevel());
             oxygenLevelSeries.getData().add(new XYChart.Data<>(formattedDate, reading.getOxygenLevel()));
         }
 
@@ -252,6 +254,14 @@ public class ChartsUtil {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        // Sort the readings by creationDateTime
+        Collections.sort(readings, new Comparator<HealthData>() {
+            @Override
+            public int compare(HealthData o1, HealthData o2) {
+                return o1.getDateTime().compareTo(o2.getDateTime()); // Ascending order
+            }
+        });
 
         return readings;
     }

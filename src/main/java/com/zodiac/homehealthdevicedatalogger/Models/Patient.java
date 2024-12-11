@@ -35,6 +35,8 @@ public class Patient {
         this.oxygenLevel = oxygenLevel;
     }
 
+    public Patient(int dataId, String userId, LocalDate dataDate, String bloodPressure, String sugarLevel, int heartRate, int oxygenLevel, String comments) {
+    }
 
 
     // Getters and Setters

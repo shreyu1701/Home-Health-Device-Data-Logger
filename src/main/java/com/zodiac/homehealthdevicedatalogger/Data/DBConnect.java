@@ -11,16 +11,6 @@ public class DBConnect {
         Connection con = DBConnect.getConnection();
         if (con != null) {
             System.out.println("Connected to database");
-            try{
-                Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery("select * from author");
-                while (rs.next()) {
-                    System.out.println(rs.getString(1) + "," + rs.getString(2) + "," + rs.getString(3));
-                }
-            }
-            catch(SQLException e){
-                e.printStackTrace();
-            }
         }
         else {
             System.out.println("Failed to connect to database");

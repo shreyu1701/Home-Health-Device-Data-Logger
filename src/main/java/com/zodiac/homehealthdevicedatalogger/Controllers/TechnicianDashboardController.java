@@ -1,11 +1,9 @@
 package com.zodiac.homehealthdevicedatalogger.Controllers;
 
-import com.zodiac.homehealthdevicedatalogger.Data.DBConnect;
-import com.zodiac.homehealthdevicedatalogger.Data.PatientHealthData;
-//import com.zodiac.homehealthdevicedatalogger.Models.Patient;
-import com.zodiac.homehealthdevicedatalogger.Models.HealthRecord;
-import com.zodiac.homehealthdevicedatalogger.Models.Patient;
-import com.zodiac.homehealthdevicedatalogger.Models.User;
+import com.itextpdf.text.DocumentException;
+import com.zodiac.homehealthdevicedatalogger.Data.*;
+import com.zodiac.homehealthdevicedatalogger.Models.*;
+import com.zodiac.homehealthdevicedatalogger.Util.ReportGeneratorTechnician;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,8 +14,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -25,13 +24,60 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.*;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 import static com.zodiac.homehealthdevicedatalogger.Controllers.LoginController.GUILoader;
 import static com.zodiac.homehealthdevicedatalogger.Controllers.PatientDashboardController.logout;
+import static com.zodiac.homehealthdevicedatalogger.Data.UserDataManager.getAllUserIds;
 
 public class TechnicianDashboardController {
     //For History section
     public Button btnTechnicianLogout;
+
+
+
+    //    ------------------------CHARTS----------------------
+    @FXML
+    private TextField searchChartId;
+    @FXML
+    private ListView<String> suggestionList;
+    @FXML
+    private DatePicker fromDatePickerCharts;
+    @FXML
+    private DatePicker toDatePickerCharts;
+    @FXML
+    private AreaChart<String, Number> bloodPressureChart;
+    @FXML
+    private AreaChart<String, Number> sugarLevelChart;
+    @FXML
+    private AreaChart<String, Number> heartRateChart;
+    @FXML
+    private AreaChart<String, Number> oxygenLevelChart;
+    @FXML
+    private ChoiceBox<String> choiceDownload;
+    @FXML
+    private Button downloadButton;
+    @FXML
+    private TitledPane generateReportPane;
+    @FXML
+    private Button btnSearchChart;
+
+
+
+    private ObservableList<String> reportFormats = FXCollections.observableArrayList("Excel", "PDF");
+
+
+//----------------------REPORTS-------------------
+    @FXML
+    private DatePicker fromDatePickerReports;
+    @FXML
+    private DatePicker toDatePickerReports;
+
+    private ReportGeneratorTechnician reportGeneratorTechnician;
+
+
     @FXML
     private Label lblFullName;
     @FXML
@@ -136,7 +182,7 @@ public class TechnicianDashboardController {
     private ObservableList<PatientHealthData> patientList = FXCollections.observableArrayList();
 
     DBConnect dbConnect= new DBConnect();
-
+    DataStorage dataStorage = new DataStorage();
 
 
     public void initialize(User user) throws SQLException {
@@ -262,6 +308,33 @@ public class TechnicianDashboardController {
         toDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> applyFilters());
 
 
+
+
+        // Set report download choices
+        choiceDownload.setItems(reportFormats);
+        choiceDownload.getSelectionModel().selectFirst();
+
+        // Set default date range
+        fromDatePickerCharts.setValue(LocalDate.now().minusDays(7)); // Default: last 7 days
+        toDatePickerCharts.setValue(LocalDate.now());
+
+        // Event handler for download button
+        downloadButton.setOnAction(e -> {
+			try {
+				onDownloadButtonClick();
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			} catch (DocumentException ex) {
+				throw new RuntimeException(ex);
+			}
+		});
+
+        // Search functionality
+        btnSearchChart.setOnAction(event -> handleSearch(String.valueOf(searchChartId)));
+
+
+        reportGeneratorTechnician = new ReportGeneratorTechnician();
+
     }
 
 //"/com/zodiac/homehealthdevicedatalogger/Views/UpdatePatientData.fxml"
@@ -309,10 +382,10 @@ public class TechnicianDashboardController {
                 // Remove the deleted item from the table view
                 patientTableView.getItems().remove(patientData);
                 System.out.println("Deleted patient health data for EMail: " + patientData.getEmail());
-                showAlert("Data removed", "Data Deleted Successfully");
+                showAlert(Alert.AlertType.INFORMATION,"Data removed", "Data Deleted Successfully");
             } else {
                 System.out.println("Failed to delete patient health data for User ID: " + patientData.getUserId());
-                showAlert("Error in Data removed", "Failed to delete patient data.");
+                showAlert(Alert.AlertType.ERROR, "Error in Data removed", "Failed to delete patient data.");
             }
 
         } catch (Exception e) {
@@ -473,20 +546,20 @@ public class TechnicianDashboardController {
             // Execute the deletion
             int rowsDeleted = preparedStatement.executeUpdate();
             if (rowsDeleted > 0) {
-                showAlert("Success", "Health record deleted successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Successful", "Health record deleted successfully.");
                 healthRecordsTable.getItems().remove(healthData); // Remove from TableView
             } else {
-                showAlert("Error", "Failed to delete the health record. Record may not exist.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete the health record. Record may not exist.");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            showAlert("Error", "An error occurred while deleting the health record.");
+            showAlert(Alert.AlertType.ERROR,"Error", "An error occurred while deleting the health record.");
         }
     }
 
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setContentText(content);
         alert.showAndWait();
@@ -663,7 +736,7 @@ public class TechnicianDashboardController {
 
         // Allow the user to edit the fields
         toggleEditableFields(true);
-        showAlert("Modify Content","You Can Edit Fields");
+        showAlert(Alert.AlertType.INFORMATION, "Modify Content","You Can Edit Fields");
     }
     private void toggleEditableFields(boolean editable) {
         firstNameField.setEditable(editable);
@@ -689,7 +762,7 @@ public class TechnicianDashboardController {
         String bloodGroup = bloodGroupField.getText();
 
         if (userId.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty()) {
-            showAlert("Error", "User ID, First Name, Last Name, Email, and Phone Number cannot be empty.");
+            showAlert(Alert.AlertType.ERROR, "Error", "User ID, First Name, Last Name, Email, and Phone Number cannot be empty.");
             return;
         }
 
@@ -698,7 +771,7 @@ public class TechnicianDashboardController {
         String updateQuery = "UPDATE users SET first_name = ?, last_name = ?, age = ?, phone_number = ?, gender = ?, email = ?, role_name = ?, blood_group = ? WHERE role_id = ?";
 
         try (Connection connection = dbConnect.getConnection();
-    PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
@@ -712,15 +785,183 @@ public class TechnicianDashboardController {
 
         int rowsAffected = preparedStatement.executeUpdate();
         if (rowsAffected > 0) {
-            showAlert("Success", "Profile details updated successfully.");
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Profile details updated successfully.");
             toggleEditableFields(false);
         } else {
-            showAlert("Error", "Failed to update profile. Please try again.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to update profile. Please try again.");
         }
 
     } catch (SQLException e) {
         e.printStackTrace();
-        showAlert("Error", "An error occurred while updating the profile: " + e.getMessage());
+        showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while updating the profile: " + e.getMessage());
     }
 }
+
+    // Event handler for the download button
+    private void handleDownload() {
+        String selectedFormat = choiceDownload.getValue();
+        LocalDate fromDate = fromDatePickerCharts.getValue();
+        LocalDate toDate = toDatePickerCharts.getValue();
+
+        if (fromDate == null || toDate == null || fromDate.isAfter(toDate)) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Date Range", "Please select a valid date range.");
+            return;
+        }
+
+        System.out.println("Downloading report in " + selectedFormat + " format from " + fromDate + " to " + toDate);
+        // Implement report generation logic here
+    }
+
+
+    @FXML
+    private void handleSearch(String newText) {
+        String userId = searchChartId.getText().trim();
+        if (userId.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Please enter a User ID to search.");
+            return;
+        }
+
+        try {
+            // Fetch all health metrics for the user
+            List<Patient> healthDataList = HealthDataAccess.getHealthDataByUserId(userId);
+
+            if (healthDataList.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Error", "No data found for the given User ID.");
+                return;
+            }
+
+            // Update charts with retrieved data
+            updateCharts(healthDataList);
+
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error fetching data: " + e.getMessage());
+        }
+    }
+
+    private void updateCharts(List<Patient> healthDataList) {
+        populateChart(bloodPressureChart, healthDataList, "Blood Pressure" , fromDatePickerCharts.getValue(), toDatePickerCharts.getValue());
+        populateChart(sugarLevelChart, healthDataList, "Sugar Level", fromDatePickerCharts.getValue(), toDatePickerCharts.getValue());
+        populateChart(heartRateChart, healthDataList, "Heart Rate", fromDatePickerCharts.getValue(), toDatePickerCharts.getValue());
+        populateChart(oxygenLevelChart, healthDataList, "Oxygen Level", fromDatePickerCharts.getValue(), toDatePickerCharts.getValue());
+    }
+
+    private void populateChart(AreaChart<String, Number> chart, List<Patient> dataList, String metric, LocalDate startDate, LocalDate endDate) {
+        // Filter and sort the data by date
+        List<Patient> filteredData = dataList.stream()
+                .filter(data -> {
+                    LocalDate dataDate = data.getDate(); // Assuming getDate() returns LocalDate
+                    return (startDate == null || !dataDate.isBefore(startDate)) &&
+                            (endDate == null || !dataDate.isAfter(endDate));
+                })
+                .sorted(Comparator.comparing(Patient::getDate)) // Ensure data is sorted by date
+                .toList();
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(metric);
+
+        for (Patient data : filteredData) {
+            String date = data.getDate().toString();
+            int value = 0; // Default value if no valid data is found
+
+            switch (metric) {
+                case "Blood Pressure":
+                    String bloodPressure = data.getBloodPressure();
+                    if (bloodPressure != null && !bloodPressure.isEmpty()) {
+                        try {
+                            value = Integer.parseInt(bloodPressure.split("/")[0]); // Systolic value
+                        } catch (NumberFormatException e) {
+                            value = 0; // Default value if parsing fails
+                        }
+                    }
+                    break;
+                case "Sugar Level":
+                    String sugarLevel = data.getSugarLevel();
+                    if (sugarLevel != null && !sugarLevel.isEmpty()) {
+                        try {
+                            value = Integer.parseInt(sugarLevel);
+                        } catch (NumberFormatException e) {
+                            value = 0; // Default value if parsing fails
+                        }
+                    }
+                    break;
+                case "Heart Rate":
+                    value = data.getHeartRate(); // Assuming getHeartRate() returns an int
+                    break;
+                case "Oxygen Level":
+                    value = data.getOxygenLevel(); // Assuming getOxygenLevel() returns an int
+                    break;
+                default:
+                    value = 0; // Safe default if metric is unrecognized
+            }
+            series.getData().add(new XYChart.Data<>(date, value));
+        }
+
+        chart.getData().clear();
+        chart.getData().add(series);
+    }
+
+    private void filterSuggestions(String input) {
+        // Fetch all UserIDs from the database
+        List<String> allUserIds = UserDataManager.getAllUserIds();
+
+        // Filter the list to match the input as a substring (case-insensitive)
+        List<String> filteredUserIds = allUserIds.stream()
+                .filter(userId -> userId.toLowerCase().contains(input.toLowerCase()))
+                .collect(Collectors.toList());
+
+        // Update the suggestion list with filtered items
+        suggestionList.getItems().clear();
+        suggestionList.getItems().addAll(filteredUserIds);
+
+        // Show the suggestion list if there are matches
+        suggestionList.setVisible(!filteredUserIds.isEmpty());
+    }
+
+
+    @FXML
+    public void onDownloadButtonClick() throws IOException, DocumentException {
+        // Get and validate the selected date range
+
+        String userId = searchChartId.getText().trim();
+        LocalDate fromDate = fromDatePickerReports.getValue();
+        LocalDate toDate = toDatePickerReports.getValue();
+        if (fromDate == null || toDate == null || fromDate.isAfter(toDate) ||
+                fromDate.isAfter(LocalDate.now()) || toDate.isAfter(LocalDate.now())) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Date Range", "Please select a valid date range.");
+            return;
+        }
+
+        // Get the selected download format
+        String selectedFormat = choiceDownload.getValue();
+        if (selectedFormat == null) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Format", "Please select a format to download.");
+            return;
+        }
+
+        // Retrieve the current user
+        /*User currentUser = UserSession.getInstance().getCurrentUser();
+        if (currentUser == null || currentUser.getId() == null) {
+            showAlert(Alert.AlertType.ERROR, "User Error", "Could not retrieve current user.");
+            return;
+        }
+*/
+       /* String userId = currentUser.getId();*/
+        User user = dataStorage.loadUserDetailforReport(userId);
+
+        // Fetch report data
+        List<Patient> reportData = HealthDataAccess.getHealthDataForDateRange(userId, fromDate, toDate);
+
+        // Generate the report
+        Stage stage = (Stage) downloadButton.getScene().getWindow();
+        try {
+            if ("Excel".equals(selectedFormat)) {
+                reportGeneratorTechnician.generateExcelReport(user, reportData, stage);
+            } else if ("PDF".equals(selectedFormat)) {
+                reportGeneratorTechnician.generatePDFReport(user, reportData, stage);
+            }
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Report Generation Error", "Enter User ID");
+        }
+    }
+
 }

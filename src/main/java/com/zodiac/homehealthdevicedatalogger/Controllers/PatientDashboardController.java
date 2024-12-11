@@ -6,6 +6,7 @@ import com.zodiac.homehealthdevicedatalogger.Data.PatientHealthData;
 import com.zodiac.homehealthdevicedatalogger.Data.PatientHealthDataManager;
 import com.zodiac.homehealthdevicedatalogger.Models.*;
 import com.zodiac.homehealthdevicedatalogger.Util.ChartsUtil;
+import com.zodiac.homehealthdevicedatalogger.Util.ReportGenerationService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -13,7 +14,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
@@ -28,11 +28,7 @@ import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class PatientDashboardController {
     public Button btnAddHealthData;
@@ -40,6 +36,23 @@ public class PatientDashboardController {
     public Button btnEdit;
     @FXML
     public Button btnSave;
+
+    @FXML
+    public Button btnDownloadReports;
+
+    @FXML
+	private ChoiceBox<String> choiceDownload;
+    @FXML
+    private DatePicker fromDatePickerReports;
+    @FXML
+    private DatePicker toDatePickerReports;
+
+    private ReportGenerationService reportService;
+
+    public PatientDashboardController() {
+        this.reportService = new ReportGenerationService();
+    }
+
     @FXML
     private Button btnRefresh;
     @FXML
@@ -168,26 +181,7 @@ public class PatientDashboardController {
     private NumberAxis yAxis_fullChart;
     @FXML
     private VBox customLegend;
-//    @FXML
-//    private TextField PersonalUserIDField;
-//    @FXML
-//    private TextField PersonalFirstNameField;
-//    @FXML
-//    private TextField PersonalLastNameField;
-//    @FXML
-//    private TextField PersonalAgeField;
-//    @FXML
-//    private TextField PersonalPhoneNumberField;
-//    @FXML
-//    private TextField PersonalGenderField;
-//    @FXML
-//    private TextField PersonalEmailField;
-//    @FXML
-//    private TextField PersonalBloodGroupField;
-//    @FXML
-//    private Button PersonalbtnEdit;
-//    @FXML
-//    private Button PersonalbtnSave;
+
     // ObservableList for TableView data
     private ObservableList<Patient> healthDataList = FXCollections.observableArrayList();
     private User user;
@@ -318,7 +312,7 @@ public class PatientDashboardController {
         List<HeartRateData> heartRateDatadata = chartsUtil.fetchHeartRateData(user.getId());
         chartsUtil.populateHeartRateChart(heartRateDatadata, heartRateChart);
 
-        //For Oxyge Level
+        //For Oxygen Level
         xAxis.setLabel("Date and Time");
         yAxis.setLabel("Oxygen Level (%)");
 
@@ -340,6 +334,53 @@ public class PatientDashboardController {
         chartsUtil.populateHealthDataChart(allHealthData,healthDataChart);
 
 
+        // Set default value for the ChoiceBox
+        choiceDownload.setValue("Excel");
+
+        // Set up the download button action
+        btnDownloadReports.setOnAction(event -> {
+			try {
+				handleDownload();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		});
+
+    }
+
+    private void handleDownload() throws SQLException, IOException {
+        // Validate if both date pickers are selected
+        if (fromDatePickerReports.getValue() == null || toDatePickerReports.getValue() == null) {
+            // Show error (could be a dialog or alert)
+            showAlert(Alert.AlertType.ERROR , "Error" , "Please select both start and end date.");
+            return;
+        }
+        if (fromDatePickerReports.getValue().isAfter(toDatePickerReports.getValue())) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "From date cannot be after To date.");
+            return;
+        }
+        // Get selected dates and format
+        LocalDate fromDate = fromDatePickerReports.getValue();
+        LocalDate toDate = toDatePickerReports.getValue();
+        String format = choiceDownload.getValue();
+
+        List<PatientHealthData> healthDataList = PatientHealthDataManager.getHealthDataInRangeReport(fromDate, toDate);
+
+
+        // Get the current window (stage)
+        Stage stage = (Stage) btnDownloadReports.getScene().getWindow();
+
+        // Generate report based on selected format
+        if ("Excel".equals(format)) {
+            reportService.generateExcelReport(user, healthDataList, stage);
+        } else if ("PDF".equals(format)) {
+            reportService.generatePDFReport(user, healthDataList, stage);
+        } else {
+            // Handle error if format is not selected properly
+            showAlert(Alert.AlertType.ERROR , "Error", "Please select a valid download format.");
+        }
     }
 
     private void saveDataToDatabase() {
@@ -379,14 +420,18 @@ public class PatientDashboardController {
                 showAlert(Alert.AlertType.ERROR, "Success", "Personal Information Updated");
                 // Disable editing
                 disableEditing();
+				loadUserData(user);
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to save data. Please try again.");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
+        } catch (IOException e) {
+            System.out.println("Unable to load patient data");
+			throw new RuntimeException(e);
+		}
+	}
 
     private void enableEditing() {
         // Enable all TextFields for editing
@@ -397,7 +442,6 @@ public class PatientDashboardController {
         GenderField.setEditable(true);
         EmailField.setEditable(true);
         BloodGroupField.setEditable(true);
-
         // Display a message to the user
         showAlert(Alert.AlertType.ERROR, "INFORMATION", "Now you can Edit Fields");
     }
@@ -498,38 +542,6 @@ public class PatientDashboardController {
             showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while filtering data.");
         }
     }
-
-
-
-    public List<PatientHealthData> getHealthDataInRange(LocalDate fromDate, LocalDate toDate) throws SQLException {
-        List<PatientHealthData> healthDataList = new ArrayList<>();
-
-        String query = "SELECT * FROM patient_health_data WHERE date BETWEEN ? AND ?";
-        try (Connection connection = dbConnect.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setDate(1, java.sql.Date.valueOf(fromDate));
-            statement.setDate(2, java.sql.Date.valueOf(toDate));
-
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                // Create PatientHealthData objects from the result set
-                PatientHealthData healthData = new PatientHealthData(
-                        resultSet.getDate("date").toLocalDate(),
-                        resultSet.getString("blood_pressure"),
-                        resultSet.getString("sugar_level"),
-                        resultSet.getInt("heart_rate"),
-                        resultSet.getInt("oxygen_level"),
-                        resultSet.getString("comments"),
-                        resultSet.getTimestamp("creation_date_time").toLocalDateTime()
-                );
-                healthDataList.add(healthData);
-            }
-        }
-
-        return healthDataList;
-    }
-
 
 
     private void updateHealthDataInDatabase(Patient healthData) {
@@ -699,10 +711,6 @@ public class PatientDashboardController {
 
     private void loadHealthData(User user) {
         healthDataList.clear();
-
-        String dbUrl = "jdbc:oracle:thin:@calvin.humber.ca:1521:grok";
-        String dbUser = "n01660845";
-        String dbPassword = "oracle";
         String userID = user.getId();
 
         // Updated query with ORDER BY clause
@@ -711,7 +719,7 @@ public class PatientDashboardController {
                 "WHERE USER_ID = ? " +
                 "ORDER BY creationDateTime DESC";
 
-        try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        try (Connection connection = DBConnect.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             // Set the user ID in the prepared statement
@@ -867,7 +875,6 @@ public class PatientDashboardController {
             e.printStackTrace();
         }
     }
-
 //    private List<BloodPressureData> fetchBloodPressureData(String userId) {
 //        List<BloodPressureData> readings = new ArrayList<>();
 //

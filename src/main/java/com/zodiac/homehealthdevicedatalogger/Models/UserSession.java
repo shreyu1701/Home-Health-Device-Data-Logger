@@ -3,7 +3,7 @@ package com.zodiac.homehealthdevicedatalogger.Models;
 public class UserSession {
 
     private static UserSession instance;
-    private User currentUser;
+    private static User currentUser;
 
     private UserSession() {}
 
@@ -14,7 +14,7 @@ public class UserSession {
         return instance;
     }
 
-    public User getCurrentUser() {
+    public static User getCurrentUser() {
         return currentUser;
     }
 

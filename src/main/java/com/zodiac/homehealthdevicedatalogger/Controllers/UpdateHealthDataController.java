@@ -4,6 +4,7 @@ import com.zodiac.homehealthdevicedatalogger.Data.DBConnect;
 import com.zodiac.homehealthdevicedatalogger.Data.PatientHealthData;
 import com.zodiac.homehealthdevicedatalogger.Models.Patient;
 import com.zodiac.homehealthdevicedatalogger.Models.User;
+import com.zodiac.homehealthdevicedatalogger.Models.UserSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -35,8 +36,11 @@ public class UpdateHealthDataController {
     private PatientHealthData selectedHealthData;
     private boolean isUpdated = false;
 
+
     public void initialize() {
         // Optional initialization logic (if needed)
+
+
     }
 
     public void setInitialData(PatientHealthData selectedHealthData, User user) {

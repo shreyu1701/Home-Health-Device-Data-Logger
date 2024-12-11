@@ -354,10 +354,10 @@
                                                                                     <content>
                                                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="167.0">
                                                                                             <children>
-                                                                                                <DatePicker layoutX="5.0" layoutY="37.0" prefHeight="26.0" prefWidth="154.0" />
+                                                                                                <DatePicker fx:id="fromDatePickerReports" layoutX="5.0" layoutY="37.0" prefHeight="26.0" prefWidth="154.0" />
                                                                                                 <Label layoutX="6.0" layoutY="10.0" text="From :" />
                                                                                                 <Label layoutX="6.0" layoutY="74.0" text="To:" />
-                                                                                                <DatePicker layoutX="5.0" layoutY="101.0" prefHeight="26.0" prefWidth="154.0" />
+                                                                                                <DatePicker fx:id="toDatePickerReports" layoutX="5.0" layoutY="101.0" prefHeight="26.0" prefWidth="154.0" />
                                                                                                 <ChoiceBox fx:id="choiceDownload" layoutX="8.0" layoutY="239.0" prefHeight="25.0" prefWidth="155.0">
                                                                                                     <items>
                                                                                                         <FXCollections fx:factory="observableArrayList">
@@ -366,7 +366,7 @@
                                                                                                         </FXCollections>
                                                                                                     </items>
                                                                                                 </ChoiceBox>
-                                                                                                <Button layoutX="23.0" layoutY="421.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: blue;" text="Download" textFill="WHITE">
+                                                                                                <Button fx:id="btnDownloadReports" layoutX="23.0" layoutY="421.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: blue;" text="Download" textFill="WHITE">
                                                                                                     <font>
                                                                                                         <Font size="15.0" />
                                                                                                     </font>

@@ -1,5 +1,6 @@
 package com.zodiac.homehealthdevicedatalogger.Models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class HealthData {
@@ -19,6 +20,7 @@ public class HealthData {
         this.oxygenLevel = oxygenLevel;
     }
 
+
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -31,6 +33,8 @@ public class HealthData {
         return diastolic;
     }
 
+    public String getBloodPressure() { return String.valueOf(getSystolic() + getDiastolic());}
+
     public Integer getSugarLevel() {
         return sugarLevel;
     }
@@ -42,4 +46,5 @@ public class HealthData {
     public Integer getOxygenLevel() {
         return oxygenLevel;
     }
+
 }

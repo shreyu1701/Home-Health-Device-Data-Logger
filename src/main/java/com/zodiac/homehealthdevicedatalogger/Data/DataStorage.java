@@ -40,6 +40,52 @@ public class DataStorage {
     }
 
 
+    public User loadUserDetailforReport(String userID) {
+        User user = null;
+
+        // SQL query to fetch user details by email
+        String query = "SELECT USER_ID, FIRST_NAME, LAST_NAME, AGE, PHONE_NUMBER, GENDER, EMAIL, BLOOD_GROUP, ROLE_NAME " +
+                "FROM USERS WHERE USER_ID = ?";
+
+        try (Connection conn = dbConnect.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set the email parameter in the query
+            stmt.setString(1, userID);
+
+            // Execute the query
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // Create a new User object and populate it with database data
+                    user = new User();
+                    user.setId(rs.getString("USER_ID"));
+                    user.setFirstName(rs.getString("FIRST_NAME"));
+                    user.setLastName(rs.getString("LAST_NAME"));
+                    user.setAge(rs.getInt("AGE")); // Use getInt to handle numeric values
+                    user.setPhone(rs.getString("PHONE_NUMBER"));
+                    user.setGender(rs.getString("GENDER"));
+                    user.setEmail(rs.getString("EMAIL"));
+                    user.setBloodGroup(rs.getString("BLOOD_GROUP"));
+                    user.setRole(rs.getString("ROLE_NAME")); // Assuming User has a setRole method
+                } else {
+                    System.out.println("No user found with the provided User Id : " + userID);
+                }
+            }
+
+        } catch (SQLException e) {
+            // Log detailed database errors
+            System.err.println("Database error while loading user details: " + e.getMessage());
+        } catch (Exception e) {
+            // Log unexpected errors
+            System.err.println("Unexpected error: " + e.getMessage());
+        }
+
+        return user;
+
+    }
+
+
+
     public User loadUserDetail(String email) {
         User user = null;
 
@@ -68,7 +114,7 @@ public class DataStorage {
                     user.setBloodGroup(rs.getString("BLOOD_GROUP"));
                     user.setRole(rs.getString("ROLE_NAME")); // Assuming User has a setRole method
                 } else {
-                    System.out.println("No user found with the provided email: " + email);
+                    System.out.println("No user found with the provided Email Id: " + email);
                 }
             }
 
